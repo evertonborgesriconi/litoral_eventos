@@ -1,50 +1,73 @@
-<template> 
-    <header class="shadow p-3 mb-5 bg-body rounded">
-        <img src="../assets/images/logo.png" alt="logo"/>
-        <h2>Litoral eventos</h2>
-        <div>
-            <router-link to="/register">Register</router-link> |
-            <router-link to="/login">Login</router-link> 
-        </div>
+<template>
+  <header>
+    <div class="btn1">
+         <img
+      src="../assets/images/logo.png"
+      alt="logo"
+      class="rounded float-start"
+    />
+    <h2>Litoral eventos RS</h2>
+    </div>
+   
 
-    </header>
+    <div class="btn1">
+      <router-link to="/login">Acesse sua Conta</router-link>
+      <div class="btn2">
+        <router-link to="/register">Cadastre-se</router-link>
+      </div>
+    </div>
+  </header>
 </template>
 
 <script>
-
 export default {
-    name: 'HeaderApp',
-
-}
+  name: "HeaderApp",
+};
 </script>
 
 <style scoped>
-
 header {
-    height: 5rem;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 1rem;
+  height: 6rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  margin-bottom: 10px;
+  
 }
 header img {
-    height: 4rem;
-    width:  4rem
+  height: 6rem;
+  width: 6rem;
+  margin-right: 20px;
 }
 
 header h2 {
-    color: rgb(6, 5, 5);
-    font-size: 2rem;
+  color: rgb(24, 192, 122);
+  font-size: 4rem;
 }
 
 header a {
-    text-decoration: none;
-    color: blueviolet;
-    font: 1.5rem;
+  text-decoration: none;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: rgb(24, 192, 122);
 }
-header a:hover {
-    font: 2rem;
-    color: blueviolet;
+a:hover {
+  
+}
+.btn1 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+}
+.btn2 {
+    margin-left: 0.5rem;
+  padding: 3px 10px 3px 10px;
+  background-color: #ffffff;
+  border-radius: 50px 50px 50px 50px;;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);;
+
 }
 </style>

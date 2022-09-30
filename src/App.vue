@@ -17,13 +17,14 @@ export default {
 </script>
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Podkova', serif;
   padding: 0;
   margin: 0;
   box-sizing: border-box;
   display: flex;
   min-height: 100vh;
   flex-direction: column;
+  background-color: #f8f8fb;
 }
 
 main {
