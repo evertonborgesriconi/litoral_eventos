@@ -29,6 +29,6 @@ export default {
 
 main {
   flex: 1;
-   padding: 0 1rem;
+   /* padding: 0 1rem; */
 }
 </style>

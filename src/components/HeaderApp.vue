@@ -63,7 +63,7 @@ a:hover {
 
 }
 .btn2 {
-    margin-left: 0.5rem;
+  margin-left: 0.5rem;
   padding: 3px 10px 3px 10px;
   background-color: #ffffff;
   border-radius: 50px 50px 50px 50px;;

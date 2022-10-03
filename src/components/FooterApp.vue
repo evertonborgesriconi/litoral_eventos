@@ -1,6 +1,8 @@
 <template>
   <footer>
-    <p>Autor: Everton Riconi</p>
+    
+      <hr>
+    <p>Copyright © 2022 Everton Riconi</p>
   </footer>
 </template>
 
@@ -15,13 +17,15 @@ export default {
 footer {
   text-align: center;
   padding: 25px 0;
-  background-color: rgb(190, 90, 62);
+  background-color: rgb(24, 192, 122);
   color: white;
   width: 100%;
   height: 100px;
-  margin-top: 20px;
+  
   position: relative;
   font-size: 1.2rem;
+  padding-left: 60px;
+  padding-right: 60px;
 }
 
 </style>
