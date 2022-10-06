@@ -5,69 +5,94 @@
         <h2>Cadastro de criador</h2>
 
         <div class="container-fluid">
-          <div class="mb-3">
-            <label class="form-label">Nome Completo</label>
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Exemplo fulano de tal"
-              v-model="criador.nome"
-            />
-          </div>
-          <div class="mb-3">
-            <label class="form-label">CPF</label>
-            <input
-              type="text"
-              class="form-control"
-              placeholder="000.000.000-00"
-              v-mask="'###.###.###-##'"
-              v-model="criador.cpf"
-            />
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Data Nascimento</label>
-            <input type="date" class="form-control" v-model="criador.data_nascimento" />
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Telefone</label>
-            <input
-              type="tel"
-              class="form-control"
-              placeholder="(00)00000-0000"
-              v-mask="'(##) #####-####'"
-              v-model="criador.telefone"
-            />
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Email</label>
-            <input
-              type="email"
-              class="form-control"
-              placeholder="exemplo@gmail.com"
-              v-model="criador.email"
-            />
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Senha</label>
-            <input type="password" class="form-control" v-model="criador.password" />
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Confirma Senha</label>
-            <input
-              type="password"
-              class="form-control"
-              v-model="criador.password_confirmation"
-            />
-          </div>
-          <div v-if="checkErros" class="col-auto">
-            <button type="submit" class="btn" @click="postRegister()">Cadastrar-se</button>
-          </div>
-          <div v-else class="col-auto">
-            <p>Verificando informaçoes</p>
-          </div>
+          <Form @submit="postRegister">
+            <div class="mb-3">
+              <label class="form-label">Nome Completo</label>
+
+              <Field
+                name="name"
+                type="text"
+                :rules="validateName"
+                class="form-control"
+              />
+              <ErrorMessage name="name" class="error" />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">CPF</label>
+
+              <Field
+                name="cpf_cnpj"
+                type="text"
+                :rules="validateCpf_cnpj"
+                class="form-control"
+                v-mask="'###.###.###-##'"
+              />
+              <ErrorMessage name="cpf_cnpj" class="error" />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Data Nascimento</label>
+
+              <Field
+                name="data_nascimento"
+                type="date"
+                :rules="validateData_nascimento"
+                class="form-control"
+              />
+              <ErrorMessage name="data_nascimento" class="error" />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Telefone</label>
+
+              <Field
+                name="telefone"
+                type="tel"
+                :rules="validateTelefone"
+                class="form-control"
+                v-mask="'(##) #####-####'"
+              />
+              <ErrorMessage name="telefone" class="error" />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Email</label>
+
+              <Field
+                name="email"
+                type="email"
+                :rules="validateEmail"
+                class="form-control"
+              />
+              <ErrorMessage name="email" class="error" />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Senha</label>
+              <Field
+                name="password"
+                type="password"
+                :rules="validatePassword"
+                class="form-control"
+              />
+              <ErrorMessage name="password" class="error" />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Confirma Senha</label>
+              <Field
+                name="password_confirmation"
+                type="password"
+                :rules="validatePassword_confirmation"
+                class="form-control"
+              />
+              <ErrorMessage name="password_confirmation" class="error" />
+            </div>
+            <div v-if="!loading" class="col-auto">
+              <button type="submit" class="btn">Cadastrar-se</button>
+            </div>
+            <div v-else class="col-auto">
+              <p>Verificando informaçoes</p>
+            </div>
+          </Form>
         </div>
       </div>
-      <div class="col-6" >
+      <div class="col-6">
         <img src="../assets/images/img2.png" alt="img1" />
         <div class="box">
           <h2>
@@ -81,71 +106,148 @@
 </template>
   
   <script>
-//import { api } from "../../http/index";
+import router from "@/router";
+import { api } from "../../http/index";
+import { Form, Field, ErrorMessage } from "vee-validate";
+//import MessageApp from "../components/MessageApp.vue";
 
+//import { required, email } from '@vuelidate/validators'
 export default {
   name: "RegisterCriadorView",
+  components: { Form, Field, ErrorMessage },
 
   data() {
     return {
       criador: {
-        nome: "",
-        cpf: "",
+        name: "",
+        email: "",
+        cpf_cnpj: "",
         data_nascimento: null,
         telefone: "",
-        email: "",
         password: "",
         password_confirmation: "",
       },
-      errors: [],
-      checkErros: true,
+
+      errors: "",
+      checkErros: false,
+      loading: false,
     };
   },
 
   methods: {
-    validacao() {
-      if (!this.criador.nome) {
-        this.errors.push("O campo nome nao foi prenchido");
-        return false;
-      } else if (!this.criador.cpf) {
-        this.errors.push("O campo cpf nao foi prenchido");
-        return false;
-      } else if (!this.criador.data_nascimento) {
-        this.errors.push("O campo data nascimento nao foi prenchido");
-        return false;
-      } else if (!this.criador.telefone) {
-        this.errors.push("O campo telefone nao foi prenchido");
-        return false;
-      } else if (!this.criador.email) {
-        this.errors.push("O campo email nao foi prenchido");
-        return false;
-      } else if (!this.criador.password) {
-        this.errors.push("O campo senha nao foi prenchido");
-        return false;
-      } else if (!this.criador.password_confirmation) {
-        this.errors.push("O campo confirma senha nao foi prenchido");
-        return false;
+    validateName(value) {
+      if (!value) {
+        return "O campo nome  não esta prenchido";
       }
+
+      if (value.length < 6) {
+        return "O campo nome tem que ter no minimo 6 caracters";
+      }
+
+      this.criador.name = value;
+
+      return true;
+    },
+
+    validateCpf_cnpj(value) {
+      if (!value) {
+        return "O campo CPF esta vazio";
+      }
+
+      if (value.length < 14) {
+        return "O campo CPF tem que ter no minimo 14 caracters";
+      }
+
+      this.criador.cpf_cnpj = value;
+      return true;
+    },
+
+    validateData_nascimento(value) {
+      if (!value) {
+        return "O campo Data de Nascimento esta vazio";
+      }
+
+      this.criador.data_nascimento = value;
+      return true;
+    },
+
+    validateTelefone(value) {
+      if (!value) {
+        return "O campo Telefone esta vazio";
+      }
+
+      if (value.length < 15) {
+        return "O campo telefone  tem que ter no minimo 15 caracters";
+      }
+      this.criador.telefone = value;
+      return true;
+    },
+
+    validateEmail(value) {
+      if (!value) {
+        return "O campo Email esta vazio";
+      }
+
+      const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+      if (!regex.test(value)) {
+        return "Este não é um Email valido";
+      }
+
+      this.criador.email = value;
+      return true;
+    },
+
+    validatePassword(value) {
+      if (!value) {
+        return "O campo Senha esta vazio";
+      }
+
+      if (value.length < 6) {
+        return "A senha dever ter no minimo 6 caracters";
+      }
+
+      if (!/\d/.test(value)) {
+        return "A senha dever um numero";
+      }
+      if (!/[A-Z]/.test(value)) {
+        return "A senha deve ter no minimo 1 letra Maiscula";
+      }
+
+      const format = /[ !@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/;
+      if (!format.test(value)) {
+        return "A senha dever no minimo 1 caracter especial";
+      }
+      this.criador.password = value;
+      
+      return true;
+    },
+
+    validatePassword_confirmation(value) {
+      if (!value) {
+        return "O campo Confirma Senha esta vazio";
+      }
+
+      if (value != this.criador.password) {
+        return "O campo confirmar senha esta diferente do campo senha";
+      }
+
+      this.criador.password_confirmation = value;
+      
+
       return true;
     },
 
     postRegister() {
-
-      this.checkErros = true;
-      if (!this.validacao()) {
-        this.checkErros = true;
-        console.log("teu errro");
-        console.log(this.criador);
-        this.checkErros = false;
-      } else {
-        console.log("funcionona");
-        console.log(this.criador);
-        // api.post("register").then((response) => {
-        //   this.distriMensal = response.data;
-
-        //   this.filterDistribuidores();
-        // });
-      }
+      api
+        .post("register", this.criador)
+        .then((response) => {
+          if (response.status == 200 || response.status == 201) {
+            router.push({ path: "/login" });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
 };
@@ -197,6 +299,9 @@ export default {
   color: #ffffff;
   border-radius: 50px 50px 50px 50px;
   margin-bottom: 10px;
+}
+.error {
+  color: red;
 }
 </style>
     
