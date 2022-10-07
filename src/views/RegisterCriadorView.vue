@@ -1,98 +1,84 @@
 <template>
   <section>
-    <div class="row align-items-start">
-      <div class="col">
-        <h2>Cadastro de criador</h2>
-
+    <div class="col">
+      <div class="form-input">
         <div class="container-fluid">
           <Form @submit="postRegister">
-            <div class="mb-3">
+            <h2>Cadastro de criador</h2>
+            <div class="input-group mb-3">
               <label class="form-label">Nome Completo</label>
 
-              <Field
-                name="name"
-                type="text"
-                :rules="validateName"
-                class="form-control"
-              />
+              <Field name="name" type="text" :rules="validateName" />
               <ErrorMessage name="name" class="error" />
             </div>
-            <div class="mb-3">
+            <div class="input-group mb-3">
               <label class="form-label">CPF</label>
 
               <Field
                 name="cpf_cnpj"
                 type="text"
                 :rules="validateCpf_cnpj"
-                class="form-control"
                 v-mask="'###.###.###-##'"
               />
               <ErrorMessage name="cpf_cnpj" class="error" />
             </div>
-            <div class="mb-3">
+
+            <div class="input-group mb-3">
               <label class="form-label">Data Nascimento</label>
 
               <Field
                 name="data_nascimento"
                 type="date"
                 :rules="validateData_nascimento"
-                class="form-control"
               />
               <ErrorMessage name="data_nascimento" class="error" />
             </div>
-            <div class="mb-3">
+            <div class="input-group mb-3">
               <label class="form-label">Telefone</label>
 
               <Field
                 name="telefone"
                 type="tel"
                 :rules="validateTelefone"
-                class="form-control"
                 v-mask="'(##) #####-####'"
               />
               <ErrorMessage name="telefone" class="error" />
             </div>
-            <div class="mb-3">
+            <div class="input-group mb-3">
               <label class="form-label">Email</label>
 
-              <Field
-                name="email"
-                type="email"
-                :rules="validateEmail"
-                class="form-control"
-              />
+              <Field name="email" type="email" :rules="validateEmail" />
               <ErrorMessage name="email" class="error" />
             </div>
-            <div class="mb-3">
+
+            <div class="input-group mb-3">
               <label class="form-label">Senha</label>
               <Field
                 name="password"
                 type="password"
                 :rules="validatePassword"
-                class="form-control"
               />
               <ErrorMessage name="password" class="error" />
             </div>
-            <div class="mb-3">
+            <div class="input-group mb-3">
               <label class="form-label">Confirma Senha</label>
               <Field
                 name="password_confirmation"
                 type="password"
                 :rules="validatePassword_confirmation"
-                class="form-control"
               />
               <ErrorMessage name="password_confirmation" class="error" />
             </div>
+
             <div v-if="!loading" class="col-auto">
               <button type="submit" class="btn">Cadastrar-se</button>
-            </div>
-            <div v-else class="col-auto">
-              <p>Verificando informaçoes</p>
             </div>
           </Form>
         </div>
       </div>
-      <div class="col-6">
+    </div>
+    <div class="col">
+      <div class="greem-box">
         <img src="../assets/images/img2.png" alt="img1" />
         <div class="box">
           <h2>
@@ -218,7 +204,7 @@ export default {
         return "A senha dever no minimo 1 caracter especial";
       }
       this.criador.password = value;
-      
+
       return true;
     },
 
@@ -232,8 +218,6 @@ export default {
       }
 
       this.criador.password_confirmation = value;
-      
-
       return true;
     },
 
@@ -253,55 +237,81 @@ export default {
 };
 </script>
 <style scoped>
-.col-6 {
-  background-color: #18c07a;
+section {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  flex-direction: row;
 }
 
-.col-6 img {
-  height: 25rem;
-  width: 30rem;
+.form-input {
+  background-color: #ffffff;
+  padding-left: 5rem;
+  padding-right: 5rem;
 }
 
-.col-6 .box {
-  margin-top: 20px;
-  margin-bottom: 35px;
+.form-input input {
+  background-color: #f8f8fb;
+  display: block;
   width: 100%;
+  padding: 0.2rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: 0.3rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
-
-.col-6 h2 {
-  font-size: 2.5rem;
-  color: #ffffff;
-  padding-left: 6rem;
-  padding-bottom: 4.6rem;
-}
-
-.col {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-.col h2 {
-  font-size: 2.5rem;
+.form-input h2 {
+  font-size: 3.2rem;
+  font-weight: bold;
   color: #18c07a;
-}
-
-.col .col-auto {
   text-align: center;
 }
 
-.col .btn {
+.form-input label {
+  font-weight: bold;
+  color: black;
+}
+
+.error {
+  color: red;
+}
+
+.form-input .btn {
   background-color: #18c07a;
   color: #ffffff;
   border-radius: 50px 50px 50px 50px;
   margin-bottom: 10px;
+  width: 15rem;
+  height: 3rem;
+  font-size: 1.5rem;
+  text-align: center;
 }
-.error {
-  color: red;
+
+.form-input .col-auto {
+  text-align: center;
+}
+
+.greem-box {
+  background-color: #1be18f;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.greem-box img {
+  height: 20rem;
+  width: 25rem;
+}
+
+.greem-box h2 {
+  font-size: 2.5rem;
+  color: #ffffff;
+  text-align: center;
 }
 </style>
     

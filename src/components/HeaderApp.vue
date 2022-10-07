@@ -1,14 +1,13 @@
 <template>
   <header>
     <div class="btn1">
-         <img
-      src="../assets/images/logo.png"
-      alt="logo"
-      class="rounded float-start"
-    />
-    <h2>Litoral eventos RS</h2>
+      <img
+        src="../assets/images/logo.png"
+        alt="logo"
+        class="rounded float-start"
+      />
+      <router-link to="/"><h2>Litoral eventos RS</h2></router-link>
     </div>
-   
 
     <div class="btn1">
       <router-link to="/login">Acesse sua Conta</router-link>
@@ -34,7 +33,6 @@ header {
   justify-content: space-between;
   padding: 0 1rem;
   margin-bottom: 10px;
-  
 }
 header img {
   height: 6rem;
@@ -54,20 +52,17 @@ header a {
   color: rgb(24, 192, 122);
 }
 a:hover {
-  
 }
 .btn1 {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
 }
 .btn2 {
   margin-left: 0.5rem;
   padding: 3px 10px 3px 10px;
   background-color: #ffffff;
-  border-radius: 50px 50px 50px 50px;;
-  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);;
-
+  border-radius: 50px 50px 50px 50px;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
 }
 </style>
