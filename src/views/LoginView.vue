@@ -5,7 +5,7 @@
         <div class="container-fluid">
           <Form @submit="postLogin">
             <h2>Connectar-se</h2>
-            <notifications />
+            <notifications position="top center" width="600px" />
             <div class="input-group mb-3">
               <Field
                 name="email"
@@ -33,6 +33,7 @@
               <button type="submit" class="btn">Logar</button>
             </div>
           </Form>
+          
         </div>
       </div>
     </div>
@@ -104,23 +105,26 @@ export default {
     },
 
     postLogin() {
-        notify({
-  title: "Vue 3 notification 🎉",
-});
       api
         .post("login", this.criador)
         .then((response) => {
+          console.log(response.status);
           if (response.status == 200 || response.status == 201) {
             console.log(response.data);
-          }
-          if (response.status == 401) {
-            console.log(response.data);
-            console.log(response.status);
-            this.$notify("Hello user!");
+            notify({
+              type: "success",
+              text: "Login realizado com sucesso",
+            });
           }
         })
         .catch((error) => {
-          console.log(error);
+          console.log(error.request.response);
+          if (error.request.status == 401) {
+            notify({
+              type: "error",
+              text: "Senha ou Email invalidos",
+            });
+          }
         });
     },
   },
@@ -168,6 +172,7 @@ section {
   color: #18c07a;
   text-align: center;
   padding-top: 4rem;
+  padding-bottom: 3rem;
 }
 .reset-pass {
   display: flex;
@@ -247,6 +252,10 @@ section {
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
   margin-top: 4rem;
   margin-bottom: 4rem;
+}
+
+.nodi {
+  font-size: 2rem;
 }
 </style>
       

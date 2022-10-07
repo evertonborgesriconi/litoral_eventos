@@ -261,7 +261,7 @@ section {
   -moz-appearance: none;
   appearance: none;
   border-radius: 0.3rem;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  border: 2px solid #18c07a;
 }
 .form-input h2 {
   font-size: 3.2rem;
