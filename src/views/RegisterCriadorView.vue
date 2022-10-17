@@ -3,6 +3,7 @@
     <div class="col">
       <div class="form-input">
         <div class="container-fluid">
+          <notifications position="top center" width="600px" />
           <Form @submit="postRegister">
             <h2>Cadastro de criador</h2>
             <div class="input-group mb-3">
@@ -70,8 +71,11 @@
               <ErrorMessage name="password_confirmation" class="error" />
             </div>
 
-            <div v-if="!loading" class="col-auto">
+            <div v-if="loading" class="col-auto">
               <button type="submit" class="btn">Cadastrar-se</button>
+            </div>
+            <div v-else class="col-auto">
+              <SpinnerApp />
             </div>
           </Form>
         </div>
@@ -95,12 +99,14 @@
 import router from "@/router";
 import { api } from "../../http/index";
 import { Form, Field, ErrorMessage } from "vee-validate";
+import { notify } from "@kyvg/vue3-notification";
+import SpinnerApp from "../components/SpinnerApp.vue";
 //import MessageApp from "../components/MessageApp.vue";
 
 //import { required, email } from '@vuelidate/validators'
 export default {
   name: "RegisterCriadorView",
-  components: { Form, Field, ErrorMessage },
+  components: { Form, Field, ErrorMessage, SpinnerApp },
 
   data() {
     return {
@@ -116,7 +122,7 @@ export default {
 
       errors: "",
       checkErros: false,
-      loading: false,
+      loading: true,
     };
   },
 
@@ -222,15 +228,27 @@ export default {
     },
 
     postRegister() {
+      this.loading = false;
       api
         .post("register", this.criador)
         .then((response) => {
           if (response.status == 200 || response.status == 201) {
+            notify({
+              type: "success",
+              text: "Cadastro realizado com sucesso",
+            });
+
             router.push({ path: "/login" });
           }
         })
         .catch((error) => {
-          console.log(error);
+          this.loading = true;
+          var msg = error.response.data.message;
+
+          notify({
+            type: "error",
+            text: `${msg}`,
+          });
         });
     },
   },
@@ -238,12 +256,12 @@ export default {
 </script>
 <style scoped>
 section {
+  min-height: 90vh;
   display: flex;
   flex-direction: row;
 }
 
 .form-input {
-  background-color: #ffffff;
   padding-left: 5rem;
   padding-right: 5rem;
 }
@@ -262,6 +280,7 @@ section {
   appearance: none;
   border-radius: 0.3rem;
   border: 2px solid #18c07a;
+  color: #18c07a;
 }
 .form-input h2 {
   font-size: 3.2rem;

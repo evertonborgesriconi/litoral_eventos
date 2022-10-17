@@ -29,11 +29,13 @@
               </div>
             </div>
 
-            <div v-if="!loading" class="col-auto">
+            <div v-if="loading" class="col-auto">
               <button type="submit" class="btn">Logar</button>
             </div>
+            <div v-else class="col-auto">
+              <SpinnerApp />
+            </div>
           </Form>
-          
         </div>
       </div>
     </div>
@@ -55,16 +57,16 @@
 </template>
     
     <script>
-//import router from "@/router";
+import router from "@/router";
 import { api } from "../../http/index";
 import { Form, Field, ErrorMessage } from "vee-validate";
 import { notify } from "@kyvg/vue3-notification";
-//import MessageApp from "../components/MessageApp.vue";
+import SpinnerApp from "../components/SpinnerApp.vue";
 
 //import { required, email } from '@vuelidate/validators'
 export default {
   name: "LoginView",
-  components: { Form, Field, ErrorMessage },
+  components: { Form, Field, ErrorMessage, SpinnerApp },
 
   data() {
     return {
@@ -74,8 +76,7 @@ export default {
       },
 
       errors: "",
-      checkErros: false,
-      loading: false,
+      loading: true,
     };
   },
 
@@ -105,16 +106,25 @@ export default {
     },
 
     postLogin() {
+      this.loading = false;
       api
         .post("login", this.criador)
         .then((response) => {
           console.log(response.status);
           if (response.status == 200 || response.status == 201) {
-            console.log(response.data);
+            var criador = response.data.criador;
+            var criadorId = criador.id_criador;
+
+            sessionStorage.setItem("token", response.data.token);
+            sessionStorage.setItem("id_criador", criadorId);
+
+            console.log(criador);
             notify({
               type: "success",
               text: "Login realizado com sucesso",
             });
+            router.push({ path: `/deshboard/criador/:${criador.name}` });
+            this.loading = true;
           }
         })
         .catch((error) => {
@@ -124,6 +134,8 @@ export default {
               type: "error",
               text: "Senha ou Email invalidos",
             });
+
+            this.loading = true;
           }
         });
     },
@@ -132,13 +144,13 @@ export default {
 </script>
   <style scoped>
 section {
+  min-height: 90vh;
   display: flex;
   flex-direction: row;
 }
 
 .form-input {
   height: 100%;
-  background-color: #ffffff;
   padding-left: 5rem;
   padding-right: 5rem;
 }
