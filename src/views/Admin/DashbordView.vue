@@ -1,23 +1,30 @@
 <template>
   <section>
-    <nav>
-      <div class="btn1">Bem vindo!! {{ criador.name }}</div>
-
-      <button type="submit" class="btn">Meu perfil</button>
-    </nav>
-    {{ criador }}
+    <div v-if="!loading">
+      <nav>
+        <div class="btn1">Bem vindo!! {{ criador.name }}</div>
+        <button type="submit" class="btn">Meu perfil</button>
+      </nav>
+      <div class="container-fluid">
+        <router-view />
+      </div>
+    </div>
+    <div v-else>
+      <SpinnerApp/>
+    </div>
   </section>
 </template>
 
 <script>
 import { adminApi } from "../../../http/index";
 import router from "@/router";
-//import SpinnerApp from "../../components/SpinnerApp.vue";
+import SpinnerApp from "../../components/SpinnerApp.vue";
+
 
 export default {
   name: "DashbordView",
   props: ["username"],
-  //   components: { SpinnerApp },
+    components: { SpinnerApp },
   data() {
     return {
       loading: false,
@@ -34,7 +41,7 @@ export default {
   },
   methods: {
     getCriador() {
-      this.loading = false;
+      this.loading = true;
       const criador_id = sessionStorage.getItem("id_criador");
 
       if (criador_id) {
@@ -43,12 +50,13 @@ export default {
           .then((response) => {
             console.log(response.data);
             this.$store.commit("pegaCriador", response.data);
-            this.loading = true;
+            this.loading = false;
           })
           .catch((error) => {
             console.log(error.request.response);
           });
       } else {
+        this.loading = false;
         router.push({ path: "/login" });
       }
     },
@@ -73,10 +81,12 @@ nav {
   background-color: #18c07a;
   color: #ffffff;
   border-radius: 5%;
- 
-  
   font-size: 1.5rem;
   font-weight: bold;
   text-align: center;
+}
+
+.btn:hover {
+  color: #18c07a;
 }
 </style>
