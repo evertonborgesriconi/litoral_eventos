@@ -26,6 +26,7 @@ footer {
   font-size: 1.2rem;
   padding-left: 60px;
   padding-right: 60px;
+  margin-top: 1rem;
 }
 
 </style>
