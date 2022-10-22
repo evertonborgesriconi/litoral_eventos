@@ -110,15 +110,14 @@ export default {
       api
         .post("login", this.criador)
         .then((response) => {
-          console.log(response.status);
           if (response.status == 200 || response.status == 201) {
             var criador = response.data.criador;
-            var criadorId = criador.id_criador;
+            var criadorId = criador.criador_id;
 
             sessionStorage.setItem("token", response.data.token);
-            sessionStorage.setItem("id_criador", criadorId);
+            sessionStorage.setItem("criador_id", criadorId);
 
-            console.log(criador);
+            //console.log(criador);
             notify({
               type: "success",
               text: "Login realizado com sucesso",
@@ -128,15 +127,18 @@ export default {
           }
         })
         .catch((error) => {
-          console.log(error.request.response);
+          console.log(error.request.response.message);
           if (error.request.status == 401) {
             notify({
               type: "error",
               text: "Senha ou Email invalidos",
             });
-
-            this.loading = true;
           }
+          notify({
+              type: "error",
+              text: error.request.response.message,
+            });
+            this.loading = true;
         });
     },
   },

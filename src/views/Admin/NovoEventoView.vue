@@ -4,13 +4,14 @@
       <h1>Novo Evento</h1>
       <Form @submit="postEvento()">
         <div class="input-group mb-3">
-          <label class="form-label">Titulo do Evento</label>
+          <label>Titulo do Evento</label>
           <Field name="titulo" type="text" :rules="validateTitulo" />
           <ErrorMessage name="titulo" class="error" />
         </div>
         <div class="input-group mb-3">
           <div class="d-flex flex-column">
-            <label class="form-label">Imagem de divulgação </label>
+            <label>Imagem de divulgação </label>
+            <p>Selecione uma imagem de capa de divulgação do seu evento!!</p>
             <div class="row">
               <div class="col-6">
                 <div
@@ -37,13 +38,14 @@
         <div class="row">
           <div class="col">
             <div class="input-group mb-3">
-              <label class="form-label">Assunto</label>
+              <label>Assunto</label>
+              <p>Escolha um assunto que esta relacionado com o seu evento!</p>
 
-              <Field name="assunto" as="select" v-model="evento.assunto">
+              <Field name="assunto" as="select" v-model="evento.assunto_id">
                 <option disabled value="">Escolha um Assunto</option>
                 <option
                   v-for="item in assuntos"
-                  :key="item.id_assunto"
+                  :key="item.assunto_id"
                   :value="item"
                   :rules="validateAssunto"
                 >
@@ -55,12 +57,15 @@
           </div>
           <div class="col">
             <div class="input-group mb-3">
-              <label class="form-label">Categorias</label>
-              <Field name="categoria" as="select" v-model="evento.categoria">
+              <label>Categorias</label>
+              <p>
+                Escolha uma categoria que esta relacionado com o seu evento!
+              </p>
+              <Field name="categoria" as="select" v-model="evento.categoria_id">
                 <option disabled value="">Escolha uma Categoria</option>
                 <option
                   v-for="item in categorias"
-                  :key="item.id_cetegoria"
+                  :key="item.categoria_id"
                   :value="item"
                   :rules="validateCategoria"
                 >
@@ -72,7 +77,7 @@
           </div>
         </div>
         <div class="column">
-          <label class="form-label">Descrição do evento</label>
+          <label>Descrição do evento</label>
           <p>
             Conte todos os detalhes do seu evento, como a programação e os
             diferenciais da sua produção!
@@ -86,22 +91,22 @@
           <ErrorMessage name="descricao" class="error" />
         </div>
         <div class="column">
-          <label class="form-label"> Data e horário </label>
+          <label> Data e horário </label>
           <p>Informe aos participantes quando seu evento vai acontecer!</p>
         </div>
         <div class="row">
           <div class="col">
-            <label class="form-label"> Data de inicio </label>
+            <label> Data de inicio </label>
             <Field name="data_inicio" type="date" :rules="validateDataInicio" />
             <ErrorMessage name="data_inicio" class="error" />
           </div>
           <div class="col">
-            <label class="form-label"> Hora de inicio </label>
+            <label> Hora de inicio </label>
             <Field name="hora_inicio" type="time" :rules="validateHoraInicio" />
             <ErrorMessage name="hora_inicio" class="error" />
           </div>
           <div class="col">
-            <label class="form-label"> Data de termino </label>
+            <label> Data de termino </label>
             <Field
               name="data_termino"
               type="date"
@@ -110,7 +115,7 @@
             <ErrorMessage name="data_termino" class="error" />
           </div>
           <div class="col">
-            <label class="form-label"> Hora de Termino </label>
+            <label> Hora de Termino </label>
             <Field
               name="hora_termino"
               type="time"
@@ -120,7 +125,7 @@
           </div>
         </div>
         <div class="row">
-          <label class="form-label"> Busque o endereço do evento </label>
+          <label> Busque o endereço do evento </label>
           <div class="col-6">
             <div class="search">
               <GMapAutocomplete
@@ -138,65 +143,83 @@
               </button>
             </div>
             <div v-if="loadingMap" class="column">
-              <div class="input-group mb-3">
-                <label class="form-label">CEP</label>
-                <Field
-                  name="cep"
-                  type="text"
-                  :rules="validateCep"
-                  v-model="evento.cep"
-                />
-                <ErrorMessage name="cep" class="error" />
+              <div class="row">
+                <div class="col">
+                  <div class="input-group mb-3">
+                    <label>CEP</label>
+                    <Field
+                      name="cep"
+                      type="text"
+                      :rules="validateCep"
+                      v-model="evento.cep"
+                    />
+                    <ErrorMessage name="cep" class="error" />
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="input-group mb-3">
+                    <label>UF</label>
+                    <Field
+                      name="uf"
+                      type="text"
+                      :rules="validateUf"
+                      v-model="evento.uf"
+                    />
+                    <ErrorMessage name="uf" class="error" />
+                  </div>
+                </div>
               </div>
-              <div class="input-group mb-3">
-                <label class="form-label">UF</label>
-                <Field
-                  name="uf"
-                  type="text"
-                  :rules="validateUf"
-                  v-model="evento.uf"
-                />
-                <ErrorMessage name="uf" class="error" />
+              <div class="row">
+                <div class="col">
+                  <div class="input-group mb-3">
+                    <label>Cidade</label>
+                    <Field
+                      name="cidade"
+                      type="text"
+                      :rules="validateCidade"
+                      v-model="evento.cidade"
+                    />
+                    <ErrorMessage name="cidade" class="error" />
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="input-group mb-3">
+                    <label>Bairro</label>
+                    <Field
+                      name="bairro"
+                      type="text"
+                      :rules="validateBairro"
+                      v-model="evento.bairro"
+                    />
+                    <ErrorMessage name="bairro" class="error" />
+                  </div>
+                </div>
               </div>
-              <div class="input-group mb-3">
-                <label class="form-label">Cidade</label>
-                <Field
-                  name="cidade"
-                  type="text"
-                  :rules="validateCidade"
-                  v-model="evento.cidade"
-                />
-                <ErrorMessage name="cidade" class="error" />
-              </div>
-              <div class="input-group mb-3">
-                <label class="form-label">Bairro</label>
-                <Field
-                  name="bairro"
-                  type="text"
-                  :rules="validateBairro"
-                  v-model="evento.bairro"
-                />
-                <ErrorMessage name="bairro" class="error" />
-              </div>
-              <div class="input-group mb-3">
-                <label class="form-label">Av.Rua</label>
-                <Field
-                  name="logradouro"
-                  type="text"
-                  :rules="validateLogradouro"
-                  v-model="evento.logradouro"
-                />
-                <ErrorMessage name="logradouro" class="error" />
-              </div>
-              <div class="input-group mb-3">
-                <label class="form-label">Numero</label>
-                <Field
-                  name="numero"
-                  type="text"
-                  :rules="validateNumero"
-                  v-model="evento.numero"
-                />
-                <ErrorMessage name="numero" class="error" />
+              <div class="row">
+                <div class="col-8">
+                  <div class="input-group mb-3">
+                    <label>Av.Rua</label>
+                    <Field
+                      name="logradouro"
+                      type="text"
+                      :rules="validateLogradouro"
+                      v-model="evento.logradouro"
+                    />
+                    <ErrorMessage name="logradouro" class="error" />
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="input-group mb-3">
+                    <label>Numero</label>
+                    <Field
+                      name="numero"
+                      type="text"
+                      :rules="validateNumero"
+                      v-model="evento.numero"
+                    />
+                    <ErrorMessage name="numero" class="error" />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -207,7 +230,7 @@
                 :zoom="4"
                 map-type-id="terrain"
                 ref="myMapRef"
-                style="width: 100%; height: 500px"
+                style="width: 100%; height: 420px"
               >
                 <GMapMarker
                   :key="index"
@@ -218,7 +241,14 @@
             </div>
           </div>
         </div>
-        <button class="btn" type="submit">Cadastrar novo evento</button>
+        <div class="row" v-if="loadingMap">
+          <div class="col" v-if="!loadingPost">
+            <button class="btn" type="submit">Cadastrar novo Evento</button>
+          </div>
+          <div v-else>
+            <SpinnerApp />
+          </div>
+        </div>
       </Form>
     </div>
   </section>
@@ -229,20 +259,21 @@ import { adminApi } from "../../../http/index";
 import { api } from "../../../http/index";
 import { Form, Field, ErrorMessage } from "vee-validate";
 import { notify } from "@kyvg/vue3-notification";
-//import SpinnerApp from "../components/SpinnerApp.vue";
+import router from "@/router";
+import SpinnerApp from "../../components/SpinnerApp.vue";
 
 //import { notify } from "@kyvg/vue3-notification";
 export default {
   name: "NovoEventoView",
-  components: { Form, Field, ErrorMessage },
+  components: { Form, Field, ErrorMessage, SpinnerApp },
   data() {
     return {
       evento: {
-        id_criador: null,
+        criador_id: null,
         titulo_evento: "",
-        imagem_evento: '',
-        categoria: null,
-        assunto: null,
+        imagem_evento: "",
+        categoria_id: null,
+        assunto_id: null,
         decricao_evento: "",
         data_inicio: null,
         hora_inicio: null,
@@ -267,6 +298,7 @@ export default {
       center: { lat: -29.5501089, lng: -49.8872992 },
       loadingMap: false,
       loading: false,
+      loadingPost: false,
     };
   },
 
@@ -282,9 +314,11 @@ export default {
   },
   methods: {
     postEvento() {
-      this.evento.id_criador = this.criador.id_criador;
-      this.evento.categoria = this.evento.categoria.id_categoria;
-      this.evento.assunto = this.evento.assunto.id_assunto;
+      this.loadingPost = true;
+
+      this.evento.criador_id = this.criador.criador_id;
+      this.evento.categoria_id = this.evento.categoria_id.categoria_id;
+      this.evento.assunto_id = this.evento.assunto_id.assunto_id;
 
       console.log(this.evento);
       adminApi
@@ -296,10 +330,14 @@ export default {
               type: "success",
               text: "Evento cadastrado com sucesso",
             });
+
+            this.loadingPost = false;
+
+            router.push({ path: `/deshboard/criador/:${this.criador.name}` });
           }
         })
         .catch((error) => {
-          //.loading = true;
+          this.loadingPost = false;
           var msg = error.response.data.message;
           console.log(error);
 
@@ -476,15 +514,13 @@ export default {
         return "Selecione uma Categoria";
       }
 
-      console.log(value);
-
       return true;
     },
     validateAssunto(value) {
       if (!value) {
         return "Selecione uma Assunto";
       }
-      console.log(value);
+
       return true;
     },
 
@@ -508,9 +544,9 @@ export default {
       let file = input.files;
       if (file && file[0]) {
         //let formData = new FormData();
-       // formData.set("image", file[0]);
+        // formData.set("image", file[0]);
         //this.evento.imagem_evento = formData;
-       // console.log(this.imagem);
+        // console.log(this.imagem);
         let reader = new FileReader();
         reader.onload = (e) => {
           this.previewImage = e.target.result;
@@ -519,7 +555,6 @@ export default {
         };
         reader.readAsDataURL(file[0]);
         this.$emit("input", file[0]);
-
       }
     },
   },
@@ -529,6 +564,11 @@ export default {
 <style scoped>
 section {
   margin-top: 30px;
+}
+
+.container {
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  padding-bottom: 30px;
 }
 
 section h1 {
@@ -542,14 +582,11 @@ section input {
   display: block;
   width: 100%;
   padding: 0.2rem 0.75rem;
-  font-size: 1rem;
+  font-size: 1.5rem;
   font-weight: 400;
   line-height: 1.5;
   border: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
   appearance: none;
-  border-radius: 0.3rem;
   border: 2px solid #18c07a;
   color: #18c07a;
 }
@@ -558,11 +595,10 @@ section select {
   display: block;
   width: 100%;
   padding: 0.2rem 0.75rem;
-  font-size: 1rem;
+  font-size: 1.5rem;
   font-weight: 400;
   border: none;
   line-height: 1.5;
-  border-radius: 0.3rem;
   border: 2px solid #18c07a;
   color: #18c07a;
 }
@@ -574,19 +610,23 @@ section .row {
 section label {
   font-weight: bold;
   color: black;
-  font-size: 1.5rem;
+  font-size: 2rem;
 }
 
-section p {
+section .ttl {
   font-size: 1.1rem;
 }
 
+section p {
+  font-size: 1.3rem;
+}
+
 .imagePreview {
-  height: 200px;
-  width: 400px;
+  height: 250px;
+  width: 100%;
   display: block;
   cursor: pointer;
-  margin: 0 auto 30px;
+  margin-bottom: 1rem;
   background-size: cover;
   background-position: center center;
   background-color: #18c07a;
@@ -611,10 +651,11 @@ section p {
 .btn {
   background-color: #18c07a;
   color: #ffffff;
-  border-radius: 5%;
+  border-radius: 5px;
   font-size: 1.5rem;
   font-weight: bold;
   text-align: center;
+  margin-left: 5px;
 }
 
 .error {

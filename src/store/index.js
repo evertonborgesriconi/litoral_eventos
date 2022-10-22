@@ -2,7 +2,8 @@ import { createStore } from "vuex";
 
 export default createStore({
     state: {
-        criador: {}
+        criador: {},
+        eventosCriador: []
     },
     getters: {
 
@@ -11,6 +12,10 @@ export default createStore({
 
         pegaCriador (state, payload) {
             state.criador = payload
+        },
+
+        pegaEventosCriador (state, payload) {
+            state.eventosCriador = payload
         }
 
 

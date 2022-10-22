@@ -2,15 +2,17 @@
   <section>
     <div v-if="!loading">
       <nav>
-        <div class="btn1">Bem vindo!! {{ criador.name }}</div>
+        <div class="clickable" @click="getHome()">
+          Bem vindo!! {{ criador.name }}
+        </div>
         <button type="submit" class="btn">Meu perfil</button>
       </nav>
       <div class="container-fluid">
         <router-view />
       </div>
     </div>
-    <div v-else>
-      <SpinnerApp/>
+    <div v-else class="centro">
+      <SpinnerApp />
     </div>
   </section>
 </template>
@@ -20,11 +22,10 @@ import { adminApi } from "../../../http/index";
 import router from "@/router";
 import SpinnerApp from "../../components/SpinnerApp.vue";
 
-
 export default {
   name: "DashbordView",
   props: ["username"],
-    components: { SpinnerApp },
+  components: { SpinnerApp },
   data() {
     return {
       loading: false,
@@ -32,6 +33,7 @@ export default {
   },
   created() {
     this.getCriador();
+
   },
 
   computed: {
@@ -40,15 +42,17 @@ export default {
     },
   },
   methods: {
+    getHome() {
+      router.push({ path: `/deshboard/criador/:${this.criador.name}` });
+    },
     getCriador() {
       this.loading = true;
-      const criador_id = sessionStorage.getItem("id_criador");
+      const criador_id = sessionStorage.getItem("criador_id");
 
       if (criador_id) {
         adminApi
-          .get(`criador/${criador_id}`, this.criador)
+          .get(`criador/${criador_id}`)
           .then((response) => {
-            console.log(response.data);
             this.$store.commit("pegaCriador", response.data);
             this.loading = false;
           })
@@ -85,8 +89,17 @@ nav {
   font-weight: bold;
   text-align: center;
 }
+.clickable {
+  cursor: pointer;
+}
 
 .btn:hover {
-  color: #18c07a;
+  color: #04683e;
+}
+
+.centro {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
