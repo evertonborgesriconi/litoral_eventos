@@ -1,18 +1,17 @@
 <template>
-  <section>
+  <section class="container">
     <div>
       <notifications position="top center" width="600px" />
       <div class="box-nav">
+        <div></div>
+        <h1>SEUS EVENTOS CADASTRADOS</h1>
         <button type="submit" class="btn" @click="novoEvento()">
           Cadastrar novo evento
         </button>
-
-        <h1>SEUS EVENTOS CADASTRADOS</h1>
-        <div></div>
       </div>
     </div>
     <div class="box-evento" v-if="!loading">
-      {{ eventos }}
+      <EventoCardApp v-for="evento in eventos" :key="evento.evento_id" :evento="evento"/>
     </div>
     <div v-else class="centro"><SpinnerApp /></div>
   </section>
@@ -23,9 +22,10 @@ import router from "@/router";
 import { adminApi } from "../../../http/index";
 import { notify } from "@kyvg/vue3-notification";
 import SpinnerApp from "../../components/SpinnerApp.vue";
+import EventoCardApp from "../../components/EventoCardApp.vue";
 export default {
   name: "HomeCriadorView",
-  components: { SpinnerApp },
+  components: { SpinnerApp, EventoCardApp },
 
   data() {
     return {
@@ -86,6 +86,11 @@ export default {
 section {
   margin-top: 30px;
 }
+
+.container {
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  padding-top: 15px;
+}
 .box-nav {
   display: flex;
   align-items: center;
@@ -93,7 +98,7 @@ section {
 }
 
 .box-nav h1 {
-  font-size: 2rem;
+  font-size: 2.5rem;
   color: #18c07a;
   font-weight: bold;
 }
@@ -105,7 +110,7 @@ section {
 .btn {
   background-color: #18c07a;
   color: #ffffff;
-  border-radius: 5%;
+  border-radius: 5px;
   font-size: 1.5rem;
   text-align: center;
 }
