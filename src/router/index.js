@@ -5,6 +5,7 @@ import RegisterCriadorView from "../views/RegisterCriadorView.vue"
 import DashbordView from "../views/Admin/DashbordView.vue"
 import NovoEventoView from "../views/Admin/NovoEventoView.vue"
 import HomeCriadorView from "../views/Admin/HomeCriadorView.vue"
+import EditarEventoView from "../views/Admin/EditarEventoView.vue"
 
 const routes = [
   {
@@ -36,10 +37,16 @@ const routes = [
         component: HomeCriadorView,
       },
       {
-        path: '/deshboard/criador/:username/novoevento',
+        path: '/deshboard/criador/:username/novo-evento',
         name: 'NovoEvento',
         props: true,
         component: NovoEventoView,
+      },
+      {
+        path: '/deshboard/criador/:username/editar-evento/:id',
+        name: 'EditarEvento',
+        props: true,
+        component: EditarEventoView,
       },
     ],
   },

@@ -94,7 +94,9 @@ nav {
 }
 
 .btn:hover {
-  color: #04683e;
+  color: #18c07a;
+  font-size: 1.6rem;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
 }
 
 .centro {

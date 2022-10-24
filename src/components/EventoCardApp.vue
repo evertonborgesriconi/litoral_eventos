@@ -14,17 +14,23 @@
             <i class="fa-solid fa-location-dot"></i> <label>{{evento.numero}}, {{evento.logradouro}}, {{evento.bairro}}, {{evento.cidade}}, {{evento.cep}}</label>
         </div>
         <div class="row">
+          <div class="col">
+            <div class="visualizacao">
+                    <label>Vizualizaçoes: {{0}}</label>
+                </div>
+          </div>
+        </div>
+        <div class="row">
             <div class="col">
                 <div class="box-end"></div>
-                <div class="visualizacao">
-                    <label>Vizualizaçoes {{0}}</label>
-                </div>
             </div>
-            <div class="col"><button class="btv">Visualizar</button></div>
-            <div class="col"><button class="bte">Editar</button></div>
-            <div class="col"><button class="bti">Ingresso</button></div>
-                    
-           
+        </div>
+        <div class="row">
+          <div class="col">
+            <button class="btv">Visualizar</button>
+            <button class="bte" @click="editarEvento()">Editar</button>
+            <button class="bti">Venda Ingresso</button>
+          </div>
         </div>
       </div>
     </div>
@@ -32,9 +38,10 @@
 </template>
 
 <script>
+import router from "@/router";
 export default {
   name: "EventoCardApp",
-  props: ["evento"],
+  props: ["evento", "criador"],
   data() {
     return {
       data_inicio: "",
@@ -68,6 +75,11 @@ export default {
       this.hora_termino = `${dt[2]}/${dt[1]}/${dt[0]}`;
       
     },
+    editarEvento(){
+      router.push({
+        path: `/deshboard/criador/${this.criador.name}/editar-evento/${this.evento.evento_id}`,
+      });
+    }
 
 
   },
@@ -96,7 +108,8 @@ h2 {
 }
 .visualizacao{
     text-align: center;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
+    font-weight: bold;
 }
 button{
 
@@ -105,6 +118,13 @@ border-radius: 5px;
 font-size: 1.1rem;
 font-weight: bold;
 text-align: center;
+margin-left: 15px;
+border: none;
+padding: 5px 10px 5px 10px;
+}
+button:hover{
+  font-size: 1.2rem;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
 }
 .btv{
     background-color: #00fe94;

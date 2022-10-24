@@ -11,7 +11,7 @@
       </div>
     </div>
     <div class="box-evento" v-if="!loading">
-      <EventoCardApp v-for="evento in eventos" :key="evento.evento_id" :evento="evento"/>
+      <EventoCardApp v-for="evento in eventos" :key="evento.evento_id" :evento="evento" :criador="criador"/>
     </div>
     <div v-else class="centro"><SpinnerApp /></div>
   </section>
@@ -49,7 +49,7 @@ export default {
   methods: {
     novoEvento() {
       router.push({
-        path: `/deshboard/criador/:${this.criador.name}/novoevento`,
+        path: `/deshboard/criador/${this.criador.name}/novo-evento`,
       });
     },
     getEventosCriador() {
@@ -118,6 +118,8 @@ section {
 .btn:hover {
   color: #18c07a;
   background-color: #f8f8fb;
+  font-size: 1.6rem;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
 }
 
 .centro {
