@@ -2,10 +2,15 @@
   <section>
     <div v-if="!loading" class="container">
       <h1>Editar Evento</h1>
-      <Form @submit="postEvento()">
+      <Form @submit="editaEvento()">
         <div class="input-group mb-3">
           <label>Titulo do Evento</label>
-          <Field name="titulo" type="text" :rules="validateTitulo" v-model="evento.titulo_evento" />
+          <Field
+            name="titulo"
+            type="text"
+            :rules="validateTitulo"
+            v-model="evento.titulo_evento"
+          />
           <ErrorMessage name="titulo" class="error" />
         </div>
         <div class="input-group mb-3">
@@ -46,7 +51,7 @@
                 <option
                   v-for="item in assuntos"
                   :key="item.assunto_id"
-                  :value="item"
+                  :value="item.assunto_id"
                   :rules="validateAssunto"
                 >
                   {{ item.nome_assunto }}
@@ -62,16 +67,14 @@
                 Escolha uma categoria que esta relacionado com o seu evento!
               </p>
               <Field name="categoria" as="select" v-model="evento.categoria_id">
-                <option disabled value="">Escolha uma Categoria</option>
                 <option
                   v-for="item in categorias"
                   :key="item.categoria_id"
-                  :value="item"
+                  :value="item.categoria_id"
                   :rules="validateCategoria"
                 >
                   {{ item.nome_categoria }}
                 </option>
-                <option selected>{{evento.categoria_id}}</option>
               </Field>
               <ErrorMessage name="categoria" class="error" />
             </div>
@@ -99,12 +102,22 @@
         <div class="row">
           <div class="col">
             <label> Data de inicio </label>
-            <Field name="data_inicio" type="date" :rules="validateDataInicio" v-model="evento.data_inicio" />
+            <Field
+              name="data_inicio"
+              type="date"
+              :rules="validateDataInicio"
+              v-model="evento.data_inicio"
+            />
             <ErrorMessage name="data_inicio" class="error" />
           </div>
           <div class="col">
             <label> Hora de inicio </label>
-            <Field name="hora_inicio" type="time" :rules="validateHoraInicio" v-model="evento.hora_inicio" />
+            <Field
+              name="hora_inicio"
+              type="time"
+              :rules="validateHoraInicio"
+              v-model="evento.hora_inicio"
+            />
             <ErrorMessage name="hora_inicio" class="error" />
           </div>
           <div class="col">
@@ -146,7 +159,7 @@
                 Buscar
               </button>
             </div>
-            <div  class="column">
+            <div class="column">
               <div class="row">
                 <div class="col">
                   <div class="input-group mb-3">
@@ -228,29 +241,30 @@
             </div>
           </div>
           <div class="col-6">
-              <GMapMap
-                :center="center"
-                :zoom="4"
-                map-type-id="terrain"
-                ref="myMapRef"
-                style="width: 100%; height: 420px"
-              >
-                <GMapMarker
-                  :key="index"
-                  v-for="(m, index) in markers"
-                  :position="m.position"
-                />
-              </GMapMap>
-            
+            <GMapMap
+              :center="center"
+              :zoom="4"
+              map-type-id="terrain"
+              ref="myMapRef"
+              style="width: 100%; height: 420px"
+            >
+              <GMapMarker
+                :key="index"
+                v-for="(m, index) in markers"
+                :position="m.position"
+              />
+            </GMapMap>
           </div>
         </div>
         <div class="row">
-          <div class="col">
+          <div class="col" v-if="!loadingEdit">
             <button class="btn" type="submit">Editar Evento</button>
+          </div>
+          <div class="col" v-else>
+            <SpinnerApp />
           </div>
         </div>
       </Form>
-    
     </div>
     <div v-else>
       <div class="row">
@@ -269,21 +283,22 @@ import SpinnerApp from "../../components/SpinnerApp.vue";
 import { api } from "../../../http/index";
 import { Form, Field, ErrorMessage } from "vee-validate";
 export default {
-  components: { SpinnerApp,Form, Field, ErrorMessage },
+  components: { SpinnerApp, Form, Field, ErrorMessage },
   data() {
     return {
       evento_id: this.$route.params.id,
       evento: {},
       loading: false,
-      assuntos:[],
-      categorias:[],
-      center:{
-        lat:'',
-        lng:'',
+      loadingEdit: false,
+      assuntos: [],
+      categorias: [],
+      center: {
+        lat: "",
+        lng: "",
       },
       previewImage: null,
       markers: [],
-      currintPlace:[]
+      currintPlace: [],
     };
   },
   created() {
@@ -292,6 +307,22 @@ export default {
     this.getCategoria();
   },
   methods: {
+    editaEvento() {
+      this.loadingEdit = true;
+      adminApi
+        .put(`editarevento/${this.evento.evento_id}`, this.evento)
+        .then((response) => {
+          console.log(response.data);
+          if (response.status == 200 || response.status == 201) {
+            this.loadingEdit = false;
+          }
+        })
+        .catch((error) => {
+          console.log(error.request.response);
+          this.loadingEdit = false;
+        });
+    },
+
     getEvento() {
       this.loading = true;
       const criador_id = sessionStorage.getItem("criador_id");
@@ -310,7 +341,6 @@ export default {
               lng: this.evento.lng,
             };
             this.markers.push({ position: marker });
-
 
             this.loading = false;
           })
@@ -340,6 +370,13 @@ export default {
         this.evento.lng = this.currintPlace.geometry.location.lng();
 
         var endereco = this.currintPlace.address_components;
+
+        this.evento.numero = "";
+        this.evento.logradouro = "";
+        this.evento.bairro = "";
+        this.evento.cidade = "";
+        this.evento.uf = "";
+        this.evento.cep = "";
 
         for (let i = 0; i < endereco.length; i++) {
           let tipo = "";
@@ -384,15 +421,11 @@ export default {
       let input = this.$refs.fileInput;
       let file = input.files;
       if (file && file[0]) {
-        //let formData = new FormData();
-        // formData.set("image", file[0]);
-        //this.evento.imagem_evento = formData;
-        // console.log(this.imagem);
         let reader = new FileReader();
         reader.onload = (e) => {
           this.previewImage = e.target.result;
           this.evento.imagem_evento = e.target.result;
-          console.log(this.evento.imagem_evento);
+          //console.log(this.evento.imagem_evento);
         };
         reader.readAsDataURL(file[0]);
         this.$emit("input", file[0]);
@@ -538,7 +571,6 @@ export default {
 </script>
 
 <style scoped>
-
 .container {
   margin-top: 1rem;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;

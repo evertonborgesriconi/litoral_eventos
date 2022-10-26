@@ -46,7 +46,7 @@
                 <option
                   v-for="item in assuntos"
                   :key="item.assunto_id"
-                  :value="item"
+                  :value="item.assunto_id"
                   :rules="validateAssunto"
                 >
                   {{ item.nome_assunto }}
@@ -66,7 +66,7 @@
                 <option
                   v-for="item in categorias"
                   :key="item.categoria_id"
-                  :value="item"
+                  :value="item.categoria_id"
                   :rules="validateCategoria"
                 >
                   {{ item.nome_categoria }}
@@ -317,8 +317,8 @@ export default {
       this.loadingPost = true;
 
       this.evento.criador_id = this.criador.criador_id;
-      this.evento.categoria_id = this.evento.categoria_id.categoria_id;
-      this.evento.assunto_id = this.evento.assunto_id.assunto_id;
+      //this.evento.categoria_id = this.evento.categoria_id.categoria_id;
+     // this.evento.assunto_id = this.evento.assunto_id.assunto_id;
 
       console.log(this.evento);
       adminApi

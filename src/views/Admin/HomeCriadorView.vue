@@ -12,6 +12,9 @@
     </div>
     <div class="box-evento" v-if="!loading">
       <EventoCardApp v-for="evento in eventos" :key="evento.evento_id" :evento="evento" :criador="criador"/>
+      <div v-if="!eventos">
+          <div class="col"><h3>Voce nao tem eventos cadastrados!</h3></div>
+      </div>
     </div>
     <div v-else class="centro"><SpinnerApp /></div>
   </section>
@@ -105,6 +108,7 @@ section {
 
 .box-evento {
   margin-top: 1.5rem;
+  padding-bottom: 0.5rem;
 }
 
 .btn {

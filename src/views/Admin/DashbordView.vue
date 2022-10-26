@@ -5,7 +5,14 @@
         <div class="clickable" @click="getHome()">
           Bem vindo!! {{ criador.name }}
         </div>
-        <button type="submit" class="btn">Meu perfil</button>
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-bars"></i></a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#" @click="editaPerfil()">Editar perfil</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Sair</a></li>
+          </ul>
+       
+        <!-- <button type="submit" class="btn">Meu perfil</button> -->
       </nav>
       <div class="container-fluid">
         <router-view />
@@ -42,8 +49,12 @@ export default {
     },
   },
   methods: {
+
+    editaPerfil(){
+      router.push({ path: `/deshboard/criador/${this.criador.name}/editar-perfil` });
+    },
     getHome() {
-      router.push({ path: `/deshboard/criador/:${this.criador.name}` });
+      router.push({ path: `/deshboard/criador/${this.criador.name}` });
     },
     getCriador() {
       this.loading = true;
