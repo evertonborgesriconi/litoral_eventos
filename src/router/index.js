@@ -6,7 +6,7 @@ import DashbordView from "../views/Admin/DashbordView.vue"
 import NovoEventoView from "../views/Admin/NovoEventoView.vue"
 import HomeCriadorView from "../views/Admin/HomeCriadorView.vue"
 import EditarEventoView from "../views/Admin/EditarEventoView.vue"
-import EditarPerfilView from "../views/Admin/EditarPerfilView.vue"
+//import EditarPerfilView from "../views/Admin/EditarPerfilView.vue"
 
 const routes = [
   {
@@ -14,7 +14,7 @@ const routes = [
     name: 'home',
     component: HomeView
   },
-  
+
   {
     path: '/login',
     name: 'login',
@@ -49,12 +49,12 @@ const routes = [
         props: true,
         component: EditarEventoView,
       },
-      {
-        path: '/deshboard/criador/:username/editar-perfil',
-        name: 'EditarEvento',
-        props: true,
-        component: EditarPerfilView,
-      },
+      // {
+      //   path: '/deshboard/criador/:username/editar-perfil',
+      //   name: 'EditarEvento',
+      //   props: true,
+      //   component: EditarPerfilView,
+      // },
     ],
   },
 ]

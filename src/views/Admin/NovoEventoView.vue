@@ -326,9 +326,10 @@ export default {
         .then((response) => {
           console.log(response.data);
           if (response.status == 200 || response.status == 201) {
-            notify({
-              type: "success",
-              text: "Evento cadastrado com sucesso",
+            this.$swal({
+              icon: "success",
+              title: "Tudo certo!!",
+              text: "Seu Evento foi cadastrado com sucesso!",
             });
 
             this.loadingPost = false;
@@ -406,7 +407,6 @@ export default {
       api
         .get("assuntos")
         .then((response) => {
-          //console.log(response.data);
           this.assuntos = response.data;
         })
         .catch((error) => {
@@ -418,7 +418,6 @@ export default {
         .get("categorias")
         .then((response) => {
           this.categorias = response.data;
-          //console.log(response.data);
         })
         .catch((error) => {
           console.log(error.request.response);
@@ -543,10 +542,6 @@ export default {
       let input = this.$refs.fileInput;
       let file = input.files;
       if (file && file[0]) {
-        //let formData = new FormData();
-        // formData.set("image", file[0]);
-        //this.evento.imagem_evento = formData;
-        // console.log(this.imagem);
         let reader = new FileReader();
         reader.onload = (e) => {
           this.previewImage = e.target.result;

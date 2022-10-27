@@ -3,6 +3,8 @@ import App from './App.vue'
 import router from './router'
 import VueTheMask from 'vue-the-mask'
 import Notifications from '@kyvg/vue3-notification'
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 import store from "./store";
 import VueGoogleMaps from '@fawmi/vue-google-maps'
 
@@ -20,6 +22,7 @@ createApp(App)
 })
 .use(router)
 .use(VueTheMask)
+.use(VueSweetalert2)
 .use(Notifications)
 .use(store)
 .mount('#app')

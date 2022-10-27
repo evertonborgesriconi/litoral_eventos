@@ -28,8 +28,28 @@ adminApi.interceptors.request.use(function (config) {
    
 
     return config;
-}, function(erro){
-
-    return Promise.reject(erro)
+}, function(error){
+    return Promise.reject(error);
 })
+
+adminApi.interceptors.response.use(function (response) {
+ 
+
+    return response;
+  }, function (error) {
+
+    
+
+    if (error.response.status == 401) {
+        router.push({ path: "/login" });
+
+        // this.$swal({
+        //     icon: 'error',
+        //     title: 'Oops.. apareceu um poblema!!',
+        //     text: `Error ${error.response.status}`,
+        // });
+    }
+
+    return Promise.reject(error);
+  });
 

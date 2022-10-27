@@ -29,7 +29,7 @@
           <div class="col">
             <button class="btv">Visualizar</button>
             <button class="bte" @click="editarEvento()">Editar</button>
-            <button class="bti">Venda Ingresso</button>
+            <button class="bti" @click="teste()">Venda Ingresso</button>
           </div>
         </div>
       </div>
@@ -48,7 +48,7 @@ export default {
       hora_inicio: "",
       data_termino: "",
       hora_termino: "",
-      url:"http://127.0.0.1:8000/public/storage/images/eventos/"
+      url:"http://127.0.0.1:8000/storage/app/images/eventos/"
     };
   },
 
@@ -61,24 +61,31 @@ export default {
   },
 
   methods: {
+
+    teste(){
+      this.$swal({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!',
+          footer: '<a href="">Why do I have this issue?</a>'
+      });
+    },
     arumaHora() {
       let hi = this.evento.hora_inicio.split(":");
       let ht = this.evento.hora_termino.split(":");
       this.hora_inicio = `${hi[0]}:${hi[1]}`;
       this.hora_termino = `${ht[0]}:${ht[1]}`;
-      
+
     },
     arumaData() {
       let di = this.evento.data_inicio.split("-");
       let dt = this.evento.data_termino.split("-");
       this.data_inicio = `${di[2]}/${di[1]}/${di[0]}`;
       this.hora_termino = `${dt[2]}/${dt[1]}/${dt[0]}`;
-      
+
     },
     editarEvento(){
-      router.push({
-        path: `/deshboard/criador/${this.criador.name}/editar-evento/${this.evento.evento_id}`,
-      });
+      router.push({path: `/deshboard/criador/${this.criador.name}/editar-evento/${this.evento.evento_id}`});
     }
 
 

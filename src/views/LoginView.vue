@@ -105,6 +105,10 @@ export default {
       return true;
     },
 
+    readlogin(){
+
+    },
+
     postLogin() {
       this.loading = false;
       api

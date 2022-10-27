@@ -23,7 +23,7 @@
 <script>
 import router from "@/router";
 import { adminApi } from "../../../http/index";
-import { notify } from "@kyvg/vue3-notification";
+//import { notify } from "@kyvg/vue3-notification";
 import SpinnerApp from "../../components/SpinnerApp.vue";
 import EventoCardApp from "../../components/EventoCardApp.vue";
 export default {
@@ -67,14 +67,14 @@ export default {
             this.$store.commit("pegaEventosCriador", response.data);
             this.loading = false;
           })
-          .catch((error) => {
-            console.log(error.request.response);
-            notify({
-              type: "error",
-              text: error.request.response.message,
-            });
+          .catch(() => {
+            //console.log(error.request.response);
+            // notify({
+            //   type: "error",
+            //   text: error.request.response.message,
+            // });
 
-            this.getEventosCriador();
+           // this.getEventosCriador();
           });
       } else {
         this.loading = false;

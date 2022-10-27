@@ -283,7 +283,9 @@ import SpinnerApp from "../../components/SpinnerApp.vue";
 import { api } from "../../../http/index";
 import { Form, Field, ErrorMessage } from "vee-validate";
 export default {
+  name: "EditarEventoView",
   components: { SpinnerApp, Form, Field, ErrorMessage },
+
   data() {
     return {
       evento_id: this.$route.params.id,
@@ -306,6 +308,12 @@ export default {
     this.getAssunto();
     this.getCategoria();
   },
+
+  computed: {
+    criador() {
+      return this.$store.state.criador;
+    },
+  },
   methods: {
     editaEvento() {
       this.loadingEdit = true;
@@ -315,6 +323,14 @@ export default {
           console.log(response.data);
           if (response.status == 200 || response.status == 201) {
             this.loadingEdit = false;
+
+            this.$swal({
+              icon: "success",
+              title: "Tudo Certo!!",
+              text: "Evento editado com sucesso!",
+            });
+
+            router.push({ path: `/deshboard/criador/:${this.criador.name}` });
           }
         })
         .catch((error) => {

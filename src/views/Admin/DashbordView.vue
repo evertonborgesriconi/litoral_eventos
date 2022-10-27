@@ -5,13 +5,24 @@
         <div class="clickable" @click="getHome()">
           Bem vindo!! {{ criador.name }}
         </div>
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-bars"></i></a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#" @click="editaPerfil()">Editar perfil</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Sair</a></li>
-          </ul>
-       
+        <a
+          class="nav-link dropdown-toggle"
+          href="#"
+          role="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+          ><i class="fa-solid fa-bars"></i
+        ></a>
+        <ul class="dropdown-menu">
+          <li>
+            <a class="dropdown-item" href="#" @click="editaPerfil()"
+              >Editar perfil</a
+            >
+          </li>
+          <li><hr class="dropdown-divider" /></li>
+          <li><a class="dropdown-item" href="#" @click="logout()">Sair</a></li>
+        </ul>
+
         <!-- <button type="submit" class="btn">Meu perfil</button> -->
       </nav>
       <div class="container-fluid">
@@ -40,7 +51,6 @@ export default {
   },
   created() {
     this.getCriador();
-
   },
 
   computed: {
@@ -49,9 +59,26 @@ export default {
     },
   },
   methods: {
+    logout() {
+      adminApi
+        .post("logout")
+        .then((response) => {
+          if (response.status == 200 || response.status == 201) {
+            sessionStorage.setItem("token", "");
+            sessionStorage.setItem("criador_id", "");
 
-    editaPerfil(){
-      router.push({ path: `/deshboard/criador/${this.criador.name}/editar-perfil` });
+            router.push({ path: "/" });
+          }
+        })
+        .catch(() => {
+         // console.log(error.request.response);
+        });
+    },
+
+    editaPerfil() {
+      router.push({
+        path: `/deshboard/criador/${this.criador.name}/editar-perfil`,
+      });
     },
     getHome() {
       router.push({ path: `/deshboard/criador/${this.criador.name}` });
@@ -67,8 +94,8 @@ export default {
             this.$store.commit("pegaCriador", response.data);
             this.loading = false;
           })
-          .catch((error) => {
-            console.log(error.request.response);
+          .catch(() => {
+            //console.log(error.request.response);
           });
       } else {
         this.loading = false;
