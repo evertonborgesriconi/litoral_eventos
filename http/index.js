@@ -1,7 +1,7 @@
 import axios from 'axios';
 import router from "@/router";
 export const api = axios.create({
-    baseURL: 'http://127.0.0.1:8000/api/',
+    baseURL: 'https://api.litoral-eventos.com.br/api/',
     headers:{
         'Accept' : 'application/json',
         'Content' : 'application/json'
@@ -9,7 +9,7 @@ export const api = axios.create({
 })
 
 export const adminApi = axios.create({
-    baseURL: 'http://127.0.0.1:8000/api/',
+    baseURL: 'https://api.litoral-eventos.com.br/api/',
     headers:{
         'Accept' : 'application/json',
         'Content': 'application/json'
@@ -17,7 +17,7 @@ export const adminApi = axios.create({
 })
 
 adminApi.interceptors.request.use(function (config) {
-     
+
     const token = sessionStorage.getItem('token')
 
      if(token){
@@ -25,7 +25,7 @@ adminApi.interceptors.request.use(function (config) {
      }else{
         router.push({ path: "/login" });
      }
-   
+
 
     return config;
 }, function(error){
@@ -33,12 +33,12 @@ adminApi.interceptors.request.use(function (config) {
 })
 
 adminApi.interceptors.response.use(function (response) {
- 
+
 
     return response;
   }, function (error) {
 
-    
+
 
     if (error.response.status == 401) {
         router.push({ path: "/login" });

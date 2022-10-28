@@ -301,6 +301,7 @@ export default {
       previewImage: null,
       markers: [],
       currintPlace: [],
+
     };
   },
   created() {
@@ -357,6 +358,8 @@ export default {
               lng: this.evento.lng,
             };
             this.markers.push({ position: marker });
+
+            this.previewImage = `https://api.litoral-eventos.com.br/storage/images/eventos/${this.evento.imagem_evento}`;
 
             this.loading = false;
           })
@@ -434,6 +437,7 @@ export default {
       this.$refs.fileInput.click();
     },
     pickFile() {
+      this.previewImage = null;
       let input = this.$refs.fileInput;
       let file = input.files;
       if (file && file[0]) {

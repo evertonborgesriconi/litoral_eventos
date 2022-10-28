@@ -48,7 +48,7 @@ export default {
       hora_inicio: "",
       data_termino: "",
       hora_termino: "",
-      url:"http://127.0.0.1:8000/storage/app/images/eventos/"
+      url:"https://api.litoral-eventos.com.br/storage/images/eventos/"
     };
   },
 
@@ -58,6 +58,7 @@ export default {
   created() {
     this.arumaData();
     this.arumaData();
+
   },
 
   methods: {
