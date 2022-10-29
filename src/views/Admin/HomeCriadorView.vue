@@ -67,14 +67,13 @@ export default {
             this.$store.commit("pegaEventosCriador", response.data);
             this.loading = false;
           })
-          .catch(() => {
-            //console.log(error.request.response);
-            // notify({
-            //   type: "error",
-            //   text: error.request.response.message,
-            // });
-
-           // this.getEventosCriador();
+          .catch((error) => {
+            var msg = error.response.data.message;
+            this.$swal({
+              icon: "error",
+              title: "Ops algo deu errado!!",
+              text: `${msg}`,
+            });
           });
       } else {
         this.loading = false;

@@ -55,7 +55,7 @@
     </div>
   </section>
 </template>
-    
+
     <script>
 import router from "@/router";
 import { api } from "../../http/index";
@@ -105,9 +105,7 @@ export default {
       return true;
     },
 
-    readlogin(){
-
-    },
+    readlogin() {},
 
     postLogin() {
       this.loading = false;
@@ -133,16 +131,19 @@ export default {
         .catch((error) => {
           console.log(error.request.response.message);
           if (error.request.status == 401) {
-            notify({
-              type: "error",
-              text: "Senha ou Email invalidos",
+            this.$swal({
+              icon: "error",
+              title: "Ops algo deu errado!!",
+              text: "Senha ou Email invalidos!",
+            });
+          } else {
+            this.$swal({
+              icon: "error",
+              title: "Ops algo deu errado!!",
+              text: `${error.request.response.message}`,
             });
           }
-          notify({
-              type: "error",
-              text: error.request.response.message,
-            });
-            this.loading = true;
+          this.loading = true;
         });
     },
   },
@@ -276,5 +277,4 @@ section {
   font-size: 2rem;
 }
 </style>
-      
-  
+

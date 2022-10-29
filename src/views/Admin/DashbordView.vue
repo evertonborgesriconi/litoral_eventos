@@ -94,8 +94,13 @@ export default {
             this.$store.commit("pegaCriador", response.data);
             this.loading = false;
           })
-          .catch(() => {
-            //console.log(error.request.response);
+          .catch((error) => {
+            var msg = error.response.data.message;
+            this.$swal({
+              icon: "error",
+              title: "Ops algo deu errado!!",
+              text: `${msg}`,
+            });
           });
       } else {
         this.loading = false;

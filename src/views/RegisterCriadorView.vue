@@ -94,15 +94,13 @@
     </div>
   </section>
 </template>
-  
+
   <script>
 import router from "@/router";
 import { api } from "../../http/index";
 import { Form, Field, ErrorMessage } from "vee-validate";
-import { notify } from "@kyvg/vue3-notification";
 import SpinnerApp from "../components/SpinnerApp.vue";
 //import MessageApp from "../components/MessageApp.vue";
-
 //import { required, email } from '@vuelidate/validators'
 export default {
   name: "RegisterCriadorView",
@@ -233,9 +231,10 @@ export default {
         .post("register", this.criador)
         .then((response) => {
           if (response.status == 200 || response.status == 201) {
-            notify({
-              type: "success",
-              text: "Cadastro realizado com sucesso",
+            this.$swal({
+              icon: "success",
+              title: "Tudo Certo!!",
+              text: "Cadastro realizado com sucesso!",
             });
 
             router.push({ path: "/login" });
@@ -245,10 +244,11 @@ export default {
           this.loading = true;
           var msg = error.response.data.message;
 
-          notify({
-            type: "error",
-            text: `${msg}`,
-          });
+          this.$swal({
+              icon: "error",
+              title: "Ops algo deu errado!!",
+              text: `${msg}`,
+            });
         });
     },
   },
@@ -333,4 +333,4 @@ section {
   text-align: center;
 }
 </style>
-    
+

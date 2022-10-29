@@ -6,7 +6,12 @@
         <div class="input-group mb-3">
           <label class="form-label">Nome Completo</label>
 
-          <Field name="name" type="text" :rules="validateName" v-model="criador.name"/>
+          <Field
+            name="name"
+            type="text"
+            :rules="validateName"
+            v-model="criador.name"
+          />
           <ErrorMessage name="name" class="error" />
         </div>
         <div class="input-group mb-3">
@@ -48,16 +53,21 @@
         <div class="input-group mb-3">
           <label class="form-label">Email</label>
 
-          <Field name="email" type="email" :rules="validateEmail" v-model="criador.email" />
+          <Field
+            name="email"
+            type="email"
+            :rules="validateEmail"
+            v-model="criador.email"
+          />
           <ErrorMessage name="email" class="error" />
         </div>
         <button type="submit" class="btn" @click="novoEvento()">
-         Editar dados
+          Editar dados
         </button>
       </Form>
     </div>
     <div v-else>
-      <SpinnerApp/>
+      <SpinnerApp />
     </div>
   </section>
 </template>
@@ -74,8 +84,7 @@ export default {
   data() {
     return {
       criador: {},
-      loading: true
-      
+      loading: true,
     };
   },
 
@@ -98,6 +107,13 @@ export default {
           })
           .catch((error) => {
             console.log(error.request.response);
+
+            var msg = error.response.data.message;
+            this.$swal({
+              icon: "error",
+              title: "Ops algo deu errado!!",
+              text: `${msg}`,
+            });
           });
       } else {
         this.loading = false;
@@ -220,7 +236,7 @@ section input {
   margin-left: 5px;
 }
 
-.error{
+.error {
   color: red;
 }
 </style>

@@ -335,7 +335,12 @@ export default {
           }
         })
         .catch((error) => {
-          console.log(error.request.response);
+          var msg = error.response.data.message;
+            this.$swal({
+              icon: "error",
+              title: "Ops algo deu errado!!",
+              text: `${msg}`,
+            });
           this.loadingEdit = false;
         });
     },

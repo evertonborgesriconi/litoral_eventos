@@ -258,7 +258,6 @@
 import { adminApi } from "../../../http/index";
 import { api } from "../../../http/index";
 import { Form, Field, ErrorMessage } from "vee-validate";
-import { notify } from "@kyvg/vue3-notification";
 import router from "@/router";
 import SpinnerApp from "../../components/SpinnerApp.vue";
 
@@ -318,7 +317,7 @@ export default {
 
       this.evento.criador_id = this.criador.criador_id;
       //this.evento.categoria_id = this.evento.categoria_id.categoria_id;
-     // this.evento.assunto_id = this.evento.assunto_id.assunto_id;
+      // this.evento.assunto_id = this.evento.assunto_id.assunto_id;
 
       console.log(this.evento);
       adminApi
@@ -342,8 +341,9 @@ export default {
           var msg = error.response.data.message;
           console.log(error);
 
-          notify({
-            type: "error",
+          this.$swal({
+            icon: "error",
+            title: "Ops algo deu errado!!",
             text: `${msg}`,
           });
         });
