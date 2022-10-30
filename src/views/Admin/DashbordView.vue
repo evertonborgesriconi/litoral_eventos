@@ -147,4 +147,9 @@ nav {
   align-items: center;
   justify-content: center;
 }
+
+.nav-link{
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
 </style>

@@ -1,7 +1,7 @@
 <template>
   <section>
     <div class="container" v-if="!loading">
-      <Form @submit="postRegister">
+      <Form @submit="teste()">
         <h1>Editar dados criador</h1>
         <div class="input-group mb-3">
           <label class="form-label">Nome Completo</label>
@@ -93,6 +93,15 @@ export default {
   },
 
   methods: {
+
+    teste(){
+      this.$swal({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Função em Desenvolvimento!',
+
+      });
+    },
     buscaCriador() {
       this.loading = true;
       const criador_id = sessionStorage.getItem("criador_id");

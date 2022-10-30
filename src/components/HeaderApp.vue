@@ -6,7 +6,7 @@
         alt="logo"
         class="rounded float-start"
       />
-      <router-link to="/"><h2>Litoral eventos RS</h2></router-link>
+      <router-link to="/"><h2>Litoral eventos</h2></router-link>
     </div>
 
     <div class="btn1">

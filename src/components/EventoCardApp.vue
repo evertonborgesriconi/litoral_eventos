@@ -27,7 +27,7 @@
         </div>
         <div class="row">
           <div class="col">
-            <button class="btv">Visualizar</button>
+            <button class="btv" @click="teste()">Visualizar</button>
             <button class="bte" @click="editarEvento()">Editar</button>
             <button class="bti" @click="teste()">Venda Ingresso</button>
           </div>
@@ -67,8 +67,8 @@ export default {
       this.$swal({
           icon: 'error',
           title: 'Oops...',
-          text: 'Something went wrong!',
-          footer: '<a href="">Why do I have this issue?</a>'
+          text: 'Função em Desenvolvimento!',
+
       });
     },
     arumaHora() {
