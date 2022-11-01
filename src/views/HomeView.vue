@@ -12,7 +12,7 @@
               <p>divulgue e promova seus eventos de forma rapida e facil !!</p>
               <div class="btn2">
                 <router-link to="/register"
-                  >Tornece um criador agora!!</router-link
+                  >Torna-se um criador agora!!</router-link
                 >
               </div>
             </div>
@@ -68,6 +68,14 @@
           </div>
         </div>
       </div>
+      <div class="box-event">
+        <CardApp/>
+        <CardApp/>
+        <CardApp/>
+        <CardApp/>
+        <CardApp/>
+        <CardApp/>
+      </div>
     </div>
   </div>
 </template>
@@ -75,9 +83,10 @@
 <script>
 // @ is an alias to /src
 import { api } from "../../http/index";
+import CardApp from "../components/CardApp.vue";
 export default {
   name: "HomeView",
-  components: {},
+  components: {CardApp},
   data() {
     return {
       assuntos: [],
@@ -231,5 +240,17 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.box-event{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem 0;
+  margin: 0 auto;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 </style>
