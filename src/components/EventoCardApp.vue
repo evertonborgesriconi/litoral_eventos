@@ -49,6 +49,7 @@ export default {
       data_termino: "",
       hora_termino: "",
       url:"https://api.litoral-eventos.com.br/storage/images/eventos/"
+      
     };
   },
 

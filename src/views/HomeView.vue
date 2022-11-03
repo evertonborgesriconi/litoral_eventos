@@ -24,12 +24,13 @@
           <!-- <div class="col"><h2>Eventos perto de você !!</h2></div> -->
         </div>
         <div class="row">
-          <div class="col-11">
+          <div class="col">
             <div class="search-box">
               <input
                 type="text"
                 class="input-search"
                 placeholder="pesquisar por eventos..."
+                v-model="search"
               />
             </div>
             <div class="row align-items-center">
@@ -47,7 +48,7 @@
                       </option>
                     </select>
                     <select name="assunto">
-                      <option disabled value="">Assunto</option>
+                      <option disabled selected value="">Assuntos</option>
                       <option
                         v-for="item in assuntos"
                         :key="item.assunto_id"
@@ -58,23 +59,24 @@
                     </select>
                   </div>
 
-                  <div class="btn2">Procurar eventos na minha região</div>
+                  <button class="btn2" @click="getLocation()">
+                    Procurar eventos na minha região
+                  </button>
                 </div>
               </div>
             </div>
           </div>
-          <div class="col">
-            <button><i class="fa-solid fa-magnifying-glass"></i></button>
-          </div>
         </div>
       </div>
-      <div class="box-event">
-        <CardApp/>
-        <CardApp/>
-        <CardApp/>
-        <CardApp/>
-        <CardApp/>
-        <CardApp/>
+      <div class="box-event" v-if="loadingEventos">
+        <CardApp
+          v-for="evento in filteredList"
+          :key="evento.evento_id"
+          :evento="evento"
+        />
+      </div>
+      <div v-else>
+        <SpinnerApp />
       </div>
     </div>
   </div>
@@ -84,26 +86,168 @@
 // @ is an alias to /src
 import { api } from "../../http/index";
 import CardApp from "../components/CardApp.vue";
+import SpinnerApp from "../components/SpinnerApp.vue";
+import axios from "axios";
 export default {
   name: "HomeView",
-  components: {CardApp},
+  components: { CardApp, SpinnerApp },
   data() {
     return {
       assuntos: [],
       categorias: [],
+      eventos: [],
+      loadingEventos: false,
+      search: "",
+      posi: {},
+      cidade: "",
+      uf: "",
     };
   },
   created() {
     this.getAssunto();
     this.getCategoria();
+    this.getEventos();
   },
+
+  computed: {
+    filteredList() {
+      return this.eventos.filter((evento) => {
+        return evento.titulo_evento
+          .toLowerCase()
+          .includes(this.search.toLowerCase());
+      });
+    },
+  },
+
   methods: {
+    getLocation() {
+      this.loadingEventos = false;
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          this.showPosition,
+          this.showError
+        );
+      } else {
+        this.$swal({
+          icon: "error",
+          title: "Ops algo deu errado!!",
+          text: `Geolocation is not supported by this browser.`,
+        });
+        this.loadingEventos = true;
+      }
+    },
+
+    getEventosByLocalization() {
+      this.loadingEventos = false;
+      api
+        .get(`eventos/${this.uf}/${this.cidade}`)
+        .then((response) => {
+          console.log(response.data);
+          if (!response.data == []) {
+            this.eventos = response.data;
+          } else {
+            this.$swal({
+              icon: "error",
+              title: "Ops parece que não a eventos no momento na sua cidade!!",
+            });
+            this.getEventos();
+          }
+
+          this.loadingEventos = true;
+        })
+        .catch((error) => {
+          console.log(error.request.response);
+        });
+    },
+
+    showPosition(position) {
+      axios
+        .get(
+          "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
+            position.coords.latitude +
+            "," +
+            position.coords.longitude +
+            "&key=AIzaSyAb3CYZqmTuvQSWBiUSnK-ebRHU_9U1mio"
+        )
+        .then((response) => {
+          if (response.status == 200 || response.status == 201) {
+            let result = response.data.results[0];
+            let endereco = result.address_components;
+            for (let i = 0; i < endereco.length; i++) {
+              if (endereco[i].types[0] == "administrative_area_level_1") {
+                this.uf = endereco[i].long_name;
+
+              }
+              if (endereco[i].types[0] == "administrative_area_level_2") {
+                this.cidade = endereco[i].long_name;
+                
+              }
+            }
+            this.getEventosByLocalization();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          this.$swal({
+            icon: "error",
+            title: "Ops algo deu errado!!",
+            text: `${error}`,
+          });
+        });
+    },
+
+    showError(error) {
+      switch (error.code) {
+        case error.PERMISSION_DENIED:
+          this.$swal({
+            icon: "error",
+            title: "Ops algo deu errado!!",
+            text: `User denied the request for Geolocation.`,
+          });
+          break;
+        case error.POSITION_UNAVAILABLE:
+          this.$swal({
+            icon: "error",
+            title: "Ops algo deu errado!!",
+            text: `Location information is unavailable.`,
+          });
+          break;
+        case error.TIMEOUT:
+          this.$swal({
+            icon: "error",
+            title: "Ops algo deu errado!!",
+            text: `The request to get user location timed out.`,
+          });
+          break;
+        case error.UNKNOWN_ERROR:
+          this.$swal({
+            icon: "error",
+            title: "Ops algo deu errado!!",
+            text: `An unknown error occurred.`,
+          });
+          break;
+      }
+    },
+
+    getEventos() {
+      this.loadingEventos = false;
+      api
+        .get("eventos")
+        .then((response) => {
+          this.eventos = response.data;
+          //console.log(response.data);
+          this.loadingEventos = true;
+        })
+        .catch((error) => {
+          console.log(error.request.response);
+        });
+    },
     getAssunto() {
       api
         .get("assuntos")
         .then((response) => {
           this.assuntos = response.data;
-          console.log(this.assuntos);
+          //console.log(this.assuntos);
         })
         .catch((error) => {
           console.log(error.request.response);
@@ -114,7 +258,7 @@ export default {
         .get("categorias")
         .then((response) => {
           this.categorias = response.data;
-          console.log(this.categorias);
+          //console.log(this.categorias);
         })
         .catch((error) => {
           console.log(error.request.response);
@@ -242,7 +386,7 @@ button {
   justify-content: space-between;
 }
 
-.box-event{
+.box-event {
   display: flex;
   align-items: center;
   justify-content: center;
