@@ -29,7 +29,7 @@
           <div class="col">
             <button class="btv" @click="teste()">Visualizar</button>
             <button class="bte" @click="editarEvento()">Editar</button>
-            <button class="bti" @click="teste()">Venda Ingresso</button>
+            <button class="bti" @click="vendaIngresso()">Venda Ingresso</button>
           </div>
         </div>
       </div>
@@ -49,7 +49,7 @@ export default {
       data_termino: "",
       hora_termino: "",
       url:"https://api.litoral-eventos.com.br/storage/images/eventos/"
-      
+
     };
   },
 
@@ -88,6 +88,9 @@ export default {
     },
     editarEvento(){
       router.push({path: `/deshboard/criador/${this.criador.name}/editar-evento/${this.evento.evento_id}`});
+    },
+    vendaIngresso(){
+      router.push({path: `/deshboard/criador/${this.criador.name}/venda-ingresso/${this.evento.evento_id}`});
     }
 
 
@@ -114,6 +117,11 @@ h2 {
 }
 .endereco label {
     font-size: 1.2rem;
+}
+
+img{
+  height: 200px;
+  width: 100%;
 }
 .visualizacao{
     text-align: center;

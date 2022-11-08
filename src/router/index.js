@@ -7,6 +7,8 @@ import NovoEventoView from "../views/Admin/NovoEventoView.vue"
 import HomeCriadorView from "../views/Admin/HomeCriadorView.vue"
 import EditarEventoView from "../views/Admin/EditarEventoView.vue"
 import EditarPerfilView from "../views/Admin/EditarPerfilView.vue"
+import PageInfoEventoView from "../views/PageInfoEventoView.vue"
+import NovoVendaIngressoView from "../views/Admin/NovoVendaIngressoView.vue"
 
 const routes = [
   {
@@ -19,6 +21,11 @@ const routes = [
     path: '/login',
     name: 'login',
     component: LoginView
+  },
+  {
+    path: '/eventos/:id',
+    name: 'detalhesEvento',
+    component: PageInfoEventoView
   },
   {
     path: '/register',
@@ -54,6 +61,12 @@ const routes = [
         name: 'EditarPerfil',
         props: true,
         component: EditarPerfilView,
+      },
+      {
+        path: '/deshboard/criador/:username/venda-ingresso/:id',
+        name: 'VendaIngresso',
+        props: true,
+        component: NovoVendaIngressoView,
       },
     ],
   },

@@ -68,13 +68,12 @@ export default {
 .card-evento:hover{
   box-shadow: #18c07a 1px 7px 29px 1px;
   cursor: pointer;
-  font-size: 1.5rem;
 }
 
 .card-title{
   text-align: center;
   color: #18c07a;
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   font-weight: bold;
 }
 .card-text{

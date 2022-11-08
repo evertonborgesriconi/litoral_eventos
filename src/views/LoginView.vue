@@ -124,7 +124,7 @@ export default {
               type: "success",
               text: "Login realizado com sucesso",
             });
-            router.push({ path: `/deshboard/criador/:${criador.name}` });
+            router.push({ path: `/deshboard/criador/${criador.name}` });
             this.loading = true;
           }
         })
