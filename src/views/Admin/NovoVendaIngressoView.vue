@@ -10,6 +10,11 @@
           Eventos!
         </p>
       </div>
+      <div class="titulo-evento">
+        <h3>
+          Evento: <label>{{ evento.titulo_evento }}</label>
+        </h3>
+      </div>
       <div class="box-input">
         <Form @submit="postLocal()">
           <div class="input-group mb-3">
@@ -67,6 +72,7 @@ export default {
   data() {
     return {
       evento_id: this.$route.params.id,
+      evento: {},
       local: {
         nome_local: "",
         endereco: "",
@@ -84,7 +90,7 @@ export default {
     deleteLocal(id) {
       this.$swal
         .fire({
-          title: "Deseja mesmo exlcuir esse local",
+          title: "Deseja mesmo excluir esse local cadastrado?",
           showCancelButton: true,
           confirmButtonText: "Sim desejo",
           denyButtonText: `Nao`,
@@ -171,8 +177,8 @@ export default {
       api
         .get(`/evento/${this.evento_id}`)
         .then((response) => {
-          let evento = response.data;
-          this.local.evento_id = evento.evento_id;
+          this.evento = response.data;
+          this.local.evento_id = this.evento.evento_id;
 
           this.getlocal();
         })
@@ -228,6 +234,14 @@ export default {
   text-align: center;
   color: #18c07a;
   font-weight: bold;
+}
+
+.titulo-evento {
+  text-align: center;
+  font-weight: bold;
+}
+.titulo-evento label {
+  color: #18c07a;
 }
 
 .descricao {

@@ -59,8 +59,8 @@
     <script>
 import router from "@/router";
 import { api } from "../../http/index";
+import { adminApi } from "../../http/index";
 import { Form, Field, ErrorMessage } from "vee-validate";
-import { notify } from "@kyvg/vue3-notification";
 import SpinnerApp from "../components/SpinnerApp.vue";
 
 //import { required, email } from '@vuelidate/validators'
@@ -78,6 +78,10 @@ export default {
       errors: "",
       loading: true,
     };
+  },
+
+  created() {
+    this.readlogin();
   },
 
   methods: {
@@ -105,7 +109,29 @@ export default {
       return true;
     },
 
-    readlogin() {},
+    readlogin() {
+      const criador_id = sessionStorage.getItem("criador_id");
+      const token = sessionStorage.getItem("token");
+      const data = {
+        id: criador_id,
+      };
+
+      if (criador_id && token) {
+        adminApi
+          .post("validatoken", data)
+          .then((response) => {
+            if (response.status == 200 || response.status == 201) {
+              let res = response.data;
+              if (res.status == 1) {
+                router.push({ path: `/deshboard/criador/${res.criador.name}` });
+              }
+            }
+          })
+          .catch((error) => {
+            console.log(error.request.response.message);
+          });
+      }
+    },
 
     postLogin() {
       this.loading = false;
@@ -119,11 +145,6 @@ export default {
             sessionStorage.setItem("token", response.data.token);
             sessionStorage.setItem("criador_id", criadorId);
 
-            //console.log(criador);
-            notify({
-              type: "success",
-              text: "Login realizado com sucesso",
-            });
             router.push({ path: `/deshboard/criador/${criador.name}` });
             this.loading = true;
           }

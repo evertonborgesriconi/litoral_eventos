@@ -120,6 +120,7 @@ export default {
   },
 
   methods: {
+
     getLocation() {
       this.loadingEventos = false;
       if (navigator.geolocation) {
@@ -180,7 +181,7 @@ export default {
               }
               if (endereco[i].types[0] == "administrative_area_level_2") {
                 this.cidade = endereco[i].long_name;
-                
+
               }
             }
             this.getEventosByLocalization();

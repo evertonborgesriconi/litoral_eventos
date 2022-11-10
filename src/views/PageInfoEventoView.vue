@@ -24,6 +24,7 @@
           </div>
         </div>
       </div>
+      <hr>
       <div class="descricao">
         <div class="row">
           <div class="col">
@@ -32,6 +33,7 @@
         </div>
         <p>{{ evento.decricao_evento }}</p>
       </div>
+      <hr>
       <div class="endereco">
         <div class="row">
           <div class="col">
@@ -63,6 +65,18 @@
             />
           </GMapMap>
         </div>
+        <hr>
+        <div class="ingresso" v-if="!locaisIngresso == []">
+          <h2>Locais de venda de ingresso</h2>
+          <div class="ingresso-box">
+            <CardLocalApp
+              v-for="local in locaisIngresso"
+              :key="local.local_id"
+              :local="local"
+              :tipe="false"
+            />
+          </div>
+        </div>
       </div>
     </div>
     <div v-else>
@@ -74,13 +88,15 @@
 <script>
 import { api } from "../../http/index";
 import SpinnerApp from "../components/SpinnerApp.vue";
+import CardLocalApp from "../components/CardLocalApp.vue";
 export default {
   name: "PageInfoEventoView",
-  components: { SpinnerApp },
+  components: { SpinnerApp, CardLocalApp },
   data() {
     return {
       evento_id: this.$route.params.id,
       evento: {},
+      locaisIngresso: [],
       center: {
         lat: null,
         lng: null,
@@ -117,7 +133,19 @@ export default {
           this.arumaData();
           this.arumaHora();
 
+          this.getlocal();
+
           this.loading = false;
+        })
+        .catch((error) => {
+          console.log(error.request.response);
+        });
+    },
+    getlocal() {
+      api
+        .get(`/getlocal/${this.evento_id}`)
+        .then((response) => {
+          this.locaisIngresso = response.data;
         })
         .catch((error) => {
           console.log(error.request.response);

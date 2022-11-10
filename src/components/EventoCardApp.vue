@@ -27,9 +27,10 @@
         </div>
         <div class="row">
           <div class="col">
-            <button class="btv" @click="teste()">Visualizar</button>
-            <button class="bte" @click="editarEvento()">Editar</button>
-            <button class="bti" @click="vendaIngresso()">Venda Ingresso</button>
+            <button class="btv" title="visualizar" @click="visualizar()"><i class="fa-solid fa-eye"></i></button>
+            <button class="bti" title="Ingressos" @click="vendaIngresso()"><i class="fa-solid fa-ticket"></i></button>
+            <button class="bte" title="Editar" @click="editarEvento()"><i class="fa-solid fa-pen-to-square"></i></button>
+            <button class="btx" title="Deletar" @click="deleteEvento(evento.evento_id)"><i class="fa-solid fa-trash"></i></button>
           </div>
         </div>
       </div>
@@ -64,13 +65,12 @@ export default {
 
   methods: {
 
-    teste(){
-      this.$swal({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'Função em Desenvolvimento!',
+    deleteEvento(id){
+      this.$emit('delete-evento',id)
+    },
 
-      });
+    visualizar(){
+      router.push({path: `/eventos/${this.evento.evento_id}`});
     },
     arumaHora() {
       let hi = this.evento.hora_inicio.split(":");
@@ -151,6 +151,9 @@ button:hover{
 }
 .bti{
     background-color: #e5bae9;
+}
+.btx{
+  background-color: #fe0000;
 }
 .box-end{
     padding-top: 10px;

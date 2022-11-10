@@ -11,9 +11,15 @@
       </div>
     </div>
     <div class="box-evento" v-if="!loading">
-      <EventoCardApp v-for="evento in eventos" :key="evento.evento_id" :evento="evento" :criador="criador"/>
+      <EventoCardApp
+        v-for="evento in eventos"
+        :key="evento.evento_id"
+        :evento="evento"
+        :criador="criador"
+        @delete-evento="deleteEvento"
+      />
       <div v-if="!eventos">
-          <div class="col"><h3>Voce nao tem eventos cadastrados!</h3></div>
+        <div class="col"><h3>Voce nao tem eventos cadastrados!</h3></div>
       </div>
     </div>
     <div v-else class="centro"><SpinnerApp /></div>
@@ -50,6 +56,35 @@ export default {
   },
 
   methods: {
+    deleteEvento(id) {
+      this.$swal
+        .fire({
+          title: "Deseja realmente excluir esse evento?",
+          showCancelButton: true,
+          confirmButtonText: "Sim, desejo!",
+          denyButtonText: `Não`,
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+            adminApi
+              .delete(`/deleteevento/${id}`)
+              .then((response) => {
+                console.log(response.data);
+                if (response.status == 200 || response.status == 201) {
+                  this.getEventosCriador();
+                }
+              })
+              .catch((error) => {
+                var msg = error.response.data.message;
+                this.$swal({
+                  icon: "error",
+                  title: "Ops algo deu errado!!",
+                  text: `${msg}`,
+                });
+              });
+          }
+        });
+    },
     novoEvento() {
       router.push({
         path: `/deshboard/criador/${this.criador.name}/novo-evento`,
