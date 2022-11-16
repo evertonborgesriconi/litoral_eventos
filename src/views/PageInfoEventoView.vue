@@ -66,7 +66,7 @@
           </GMapMap>
         </div>
         <hr>
-        <div class="ingresso" v-if="!locaisIngresso == []">
+        <div class="ingresso" v-if="locaisIngresso.length != 0">
           <h2>Locais de venda de ingresso</h2>
           <div class="ingresso-box">
             <CardLocalApp
@@ -146,6 +146,7 @@ export default {
         .get(`/getlocal/${this.evento_id}`)
         .then((response) => {
           this.locaisIngresso = response.data;
+          console.log(this.locaisIngresso);
         })
         .catch((error) => {
           console.log(error.request.response);

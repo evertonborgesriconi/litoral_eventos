@@ -97,7 +97,8 @@
         <div class="row">
           <div class="col">
             <label> Data de inicio </label>
-            <Field name="data_inicio" type="date" :rules="validateDataInicio" />
+            <Field name="data_inicio" type="date" :rules="validateDataInicio" :minDate="minDateFormated"/>
+
             <ErrorMessage name="data_inicio" class="error" />
           </div>
           <div class="col">
@@ -111,6 +112,7 @@
               name="data_termino"
               type="date"
               :rules="validateDataTermino"
+              :minDate="minDateFormated"
             />
             <ErrorMessage name="data_termino" class="error" />
           </div>
@@ -298,6 +300,7 @@ export default {
       loadingMap: false,
       loading: false,
       loadingPost: false,
+      minDateFormated: null
     };
   },
 
@@ -310,8 +313,13 @@ export default {
   created() {
     this.getAssunto();
     this.getCategoria();
+    this.newData();
   },
   methods: {
+
+    newData(){
+        this.minDateFormated = new Date();
+    },
     postEvento() {
       this.loadingPost = true;
 

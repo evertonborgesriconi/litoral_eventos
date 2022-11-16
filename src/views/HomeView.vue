@@ -37,8 +37,12 @@
               <div class="col">
                 <div class="ac">
                   <div>
-                    <select name="categoria">
-                      <option disabled selected value="">Categorias</option>
+                    <select
+                      name="categoria"
+                      v-on:change="filterLister()"
+                      v-model="categoria"
+                    >
+                      <option disabled selected value="all">Categorias</option>
                       <option
                         v-for="item in categorias"
                         :key="item.categoria_id"
@@ -47,8 +51,12 @@
                         {{ item.nome_categoria }}
                       </option>
                     </select>
-                    <select name="assunto">
-                      <option disabled selected value="">Assuntos</option>
+                    <!-- <select
+                      name="assunto"
+                      v-on:change="filterLister()"
+                      v-model="assunto"
+                    >
+                      <option disabled selected value="all">Assuntos</option>
                       <option
                         v-for="item in assuntos"
                         :key="item.assunto_id"
@@ -56,12 +64,13 @@
                       >
                         {{ item.nome_assunto }}
                       </option>
-                    </select>
+                    </select> -->
                   </div>
 
                   <button class="btn2" @click="getLocation()">
                     Procurar eventos na minha região
                   </button>
+                  <button class="btn2" @click="teste()">teste</button>
                 </div>
               </div>
             </div>
@@ -74,6 +83,9 @@
           :key="evento.evento_id"
           :evento="evento"
         />
+        <h4 v-if="filteredList.length == 0">
+          Atualmente não a eventos perto de você
+        </h4>
       </div>
       <div v-else>
         <SpinnerApp />
@@ -96,11 +108,14 @@ export default {
       assuntos: [],
       categorias: [],
       eventos: [],
+      totalEventos: [],
       loadingEventos: false,
       search: "",
       posi: {},
       cidade: "",
       uf: "",
+      assunto: "all",
+      categoria: "all",
     };
   },
   created() {
@@ -120,6 +135,37 @@ export default {
   },
 
   methods: {
+    teste() {
+      this.totalEventos.forEach((evento) => {
+        var p1 = Math.cos((90 - -29.339044) * (Math.PI / 180));
+        // Inicio dos calculos 2° parte
+        var p2 = Math.cos((90 - evento.lat) * (Math.PI / 180));
+        // Inicio dos calculos 3° parte
+        var p3 = Math.sin((90 - -29.339044) * (Math.PI / 180));
+        // Inicio dos calculos 4° parte
+        var p4 = Math.sin((90 - evento.lat) * (Math.PI / 180));
+        // Inicio dos calculos 5° parte
+        var p5 = Math.cos((-49.726735 - evento.lng) * (Math.PI / 180));
+
+        var KM = Math.acos(p1 * p2 + p3 * p4 * p5) * 6371 * 1.15;
+
+        if (KM < 100) {
+          console.log(evento);
+        }
+      });
+    },
+
+    filterLister() {
+      this.eventos = [];
+      if (this.categoria != "all") {
+        console.log(this.categoria);
+        this.totalEventos.forEach((evento) => {
+          if (this.categoria == evento.categoria_id) {
+            this.eventos.push(evento);
+          }
+        });
+      }
+    },
 
     getLocation() {
       this.loadingEventos = false;
@@ -162,6 +208,7 @@ export default {
     },
 
     showPosition(position) {
+      console.log(position);
       axios
         .get(
           "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
@@ -174,14 +221,13 @@ export default {
           if (response.status == 200 || response.status == 201) {
             let result = response.data.results[0];
             let endereco = result.address_components;
+            console.log(endereco);
             for (let i = 0; i < endereco.length; i++) {
               if (endereco[i].types[0] == "administrative_area_level_1") {
                 this.uf = endereco[i].long_name;
-
               }
               if (endereco[i].types[0] == "administrative_area_level_2") {
                 this.cidade = endereco[i].long_name;
-
               }
             }
             this.getEventosByLocalization();
@@ -236,7 +282,8 @@ export default {
         .get("eventos")
         .then((response) => {
           this.eventos = response.data;
-          //console.log(response.data);
+          this.totalEventos = response.data;
+          console.log(this.eventos);
           this.loadingEventos = true;
         })
         .catch((error) => {
@@ -248,7 +295,6 @@ export default {
         .get("assuntos")
         .then((response) => {
           this.assuntos = response.data;
-          //console.log(this.assuntos);
         })
         .catch((error) => {
           console.log(error.request.response);
@@ -369,16 +415,17 @@ button {
 }
 
 .box-search select {
-  padding: 3px 10px 3px 10px;
+  padding: 3px 5px 3px 5px;
   background-color: #ffffff;
   border-radius: 50px 50px 50px 50px;
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
   color: #18c07a;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   text-align: center;
   border: none;
   margin-right: 10px;
   font-weight: bold;
+  margin-top: 20px;
 }
 
 .ac {
@@ -397,5 +444,11 @@ button {
   justify-content: space-around;
   padding-left: 10px;
   padding-right: 10px;
+}
+
+h4 {
+  padding-top: 30px;
+  font-size: 2rem;
+  color: rgb(170, 169, 169);
 }
 </style>
