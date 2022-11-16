@@ -16,7 +16,7 @@
         <div class="row">
           <div class="col">
             <div class="visualizacao">
-                    <label>Vizualizaçoes: {{0}}</label>
+                    <label>Vizualizaçoes: {{evento.view}}</label>
                 </div>
           </div>
         </div>
@@ -127,6 +127,7 @@ img{
     text-align: center;
     font-size: 1.2rem;
     font-weight: bold;
+    color: #b9c128;
 }
 button{
 

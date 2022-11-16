@@ -24,7 +24,7 @@
           </div>
         </div>
       </div>
-      <hr>
+      <hr />
       <div class="descricao">
         <div class="row">
           <div class="col">
@@ -33,7 +33,7 @@
         </div>
         <p>{{ evento.decricao_evento }}</p>
       </div>
-      <hr>
+      <hr />
       <div class="endereco">
         <div class="row">
           <div class="col">
@@ -65,7 +65,7 @@
             />
           </GMapMap>
         </div>
-        <hr>
+        <hr />
         <div class="ingresso" v-if="locaisIngresso.length != 0">
           <h2>Locais de venda de ingresso</h2>
           <div class="ingresso-box">
@@ -114,6 +114,18 @@ export default {
     this.getEvento();
   },
   methods: {
+    addView(evento_id) {
+      let data = { evento_id: evento_id };
+      api
+        .post("/viewevento", data)
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.log(error.request.response);
+        });
+    },
+
     getEvento() {
       this.loading = true;
       api
@@ -134,6 +146,7 @@ export default {
           this.arumaHora();
 
           this.getlocal();
+          this.addView(this.evento.evento_id);
 
           this.loading = false;
         })

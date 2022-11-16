@@ -43,6 +43,7 @@
                       v-model="categoria"
                     >
                       <option disabled selected value="all">Categorias</option>
+                      <option selected value="all">Todas</option>
                       <option
                         v-for="item in categorias"
                         :key="item.categoria_id"
@@ -67,10 +68,16 @@
                     </select> -->
                   </div>
 
-                  <button class="btn2" @click="getLocation()">
-                    Procurar eventos na minha região
+                  <button
+                    class="btn2"
+                    @click="filterEventoPerto()"
+                    v-if="loadingButton"
+                  >
+                    Procurar eventos perto de min!!
                   </button>
-                  <button class="btn2" @click="teste()">teste</button>
+                  <button class="btn2" @click="allEventos()" v-else>
+                    Retornar todos os eventos!
+                  </button>
                 </div>
               </div>
             </div>
@@ -83,9 +90,7 @@
           :key="evento.evento_id"
           :evento="evento"
         />
-        <h4 v-if="filteredList.length == 0">
-          Atualmente não a eventos perto de você
-        </h4>
+        <h4 v-if="filteredList.length == 0">Nenhum evento encontrado!</h4>
       </div>
       <div v-else>
         <SpinnerApp />
@@ -99,7 +104,7 @@
 import { api } from "../../http/index";
 import CardApp from "../components/CardApp.vue";
 import SpinnerApp from "../components/SpinnerApp.vue";
-import axios from "axios";
+//import axios from "axios";
 export default {
   name: "HomeView",
   components: { CardApp, SpinnerApp },
@@ -116,6 +121,9 @@ export default {
       uf: "",
       assunto: "all",
       categoria: "all",
+      userCord: null,
+      loadingButton: true,
+      loc: false,
     };
   },
   created() {
@@ -135,36 +143,50 @@ export default {
   },
 
   methods: {
-    teste() {
-      this.totalEventos.forEach((evento) => {
-        var p1 = Math.cos((90 - -29.339044) * (Math.PI / 180));
-        // Inicio dos calculos 2° parte
-        var p2 = Math.cos((90 - evento.lat) * (Math.PI / 180));
-        // Inicio dos calculos 3° parte
-        var p3 = Math.sin((90 - -29.339044) * (Math.PI / 180));
-        // Inicio dos calculos 4° parte
-        var p4 = Math.sin((90 - evento.lat) * (Math.PI / 180));
-        // Inicio dos calculos 5° parte
-        var p5 = Math.cos((-49.726735 - evento.lng) * (Math.PI / 180));
+    allEventos() {
+      this.loadingEventos = false;
+      this.eventos = this.totalEventos;
+      this.loadingButton = true;
+      this.loadingEventos = true;
+    },
 
-        var KM = Math.acos(p1 * p2 + p3 * p4 * p5) * 6371 * 1.15;
+    filterEventoPerto() {
+      if (this.loc == false) {
+        this.$swal({
+          icon: "error",
+          title: "Ops algo deu errado!!",
+          text: `Para utilizar essa função você deve primeiro liberar sua localização para o site`,
+        });
+        return;
+      } else {
+        this.loadingEventos = false;
+        this.eventos = [];
 
-        if (KM < 100) {
-          console.log(evento);
-        }
-      });
+        this.totalEventos.forEach((evento) => {
+          if (parseFloat(evento.distanceUser) < 80) {
+            this.eventos.push(evento);
+          }
+        });
+        this.loadingButton = false;
+
+        this.loadingEventos = true;
+      }
     },
 
     filterLister() {
+      this.loadingEventos = false;
       this.eventos = [];
       if (this.categoria != "all") {
-        console.log(this.categoria);
+        //  console.log(this.categoria);
         this.totalEventos.forEach((evento) => {
           if (this.categoria == evento.categoria_id) {
             this.eventos.push(evento);
           }
         });
+      } else {
+        this.eventos = this.totalEventos;
       }
+      this.loadingEventos = true;
     },
 
     getLocation() {
@@ -180,67 +202,79 @@ export default {
           title: "Ops algo deu errado!!",
           text: `Geolocation is not supported by this browser.`,
         });
-        this.loadingEventos = true;
       }
+      this.loadingEventos = true;
     },
 
-    getEventosByLocalization() {
-      this.loadingEventos = false;
-      api
-        .get(`eventos/${this.uf}/${this.cidade}`)
-        .then((response) => {
-          console.log(response.data);
-          if (!response.data == []) {
-            this.eventos = response.data;
-          } else {
-            this.$swal({
-              icon: "error",
-              title: "Ops parece que não a eventos no momento na sua cidade!!",
-            });
-            this.getEventos();
-          }
+    orderByData() {
+      let data = new data;
+      function compare(a,b) {
+        return a.data_termino - b.data_termino;
+      }
+      this.eventos.sort(compare);
+      console.log(this.eventos);
 
-          this.loadingEventos = true;
-        })
-        .catch((error) => {
-          console.log(error.request.response);
-        });
+
+    },
+
+    distanceEvento(cord, eventos) {
+      eventos.forEach((evento) => {
+        var p1 = Math.cos((90 - cord.lat) * (Math.PI / 180));
+        // Inicio dos calculos 2° parte
+        var p2 = Math.cos((90 - evento.lat) * (Math.PI / 180));
+        // Inicio dos calculos 3° parte
+        var p3 = Math.sin((90 - cord.lat) * (Math.PI / 180));
+        // Inicio dos calculos 4° parte
+        var p4 = Math.sin((90 - evento.lat) * (Math.PI / 180));
+        // Inicio dos calculos 5° parte
+        var p5 = Math.cos((cord.lng - evento.lng) * (Math.PI / 180));
+        var km = Math.acos(p1 * p2 + p3 * p4 * p5) * 6371 * 1.15;
+        evento.distanceUser = km.toFixed(1).replace(".", ",");
+      });
     },
 
     showPosition(position) {
-      console.log(position);
-      axios
-        .get(
-          "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
-            position.coords.latitude +
-            "," +
-            position.coords.longitude +
-            "&key=AIzaSyAb3CYZqmTuvQSWBiUSnK-ebRHU_9U1mio"
-        )
-        .then((response) => {
-          if (response.status == 200 || response.status == 201) {
-            let result = response.data.results[0];
-            let endereco = result.address_components;
-            console.log(endereco);
-            for (let i = 0; i < endereco.length; i++) {
-              if (endereco[i].types[0] == "administrative_area_level_1") {
-                this.uf = endereco[i].long_name;
-              }
-              if (endereco[i].types[0] == "administrative_area_level_2") {
-                this.cidade = endereco[i].long_name;
-              }
-            }
-            this.getEventosByLocalization();
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-          this.$swal({
-            icon: "error",
-            title: "Ops algo deu errado!!",
-            text: `${error}`,
-          });
-        });
+      const cord = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+      };
+      this.distanceEvento(cord, this.eventos);
+      this.distanceEvento(cord, this.totalEventos);
+
+      this.loc = true;
+
+      // axios
+      //   .get(
+      //     "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
+      //       position.coords.latitude +
+      //       "," +
+      //       position.coords.longitude +
+      //       "&key=AIzaSyAb3CYZqmTuvQSWBiUSnK-ebRHU_9U1mio"
+      //   )
+      //   .then((response) => {
+      //     if (response.status == 200 || response.status == 201) {
+      //       let result = response.data.results[0];
+      //       let endereco = result.address_components;
+      //       console.log(endereco);
+      //       for (let i = 0; i < endereco.length; i++) {
+      //         if (endereco[i].types[0] == "administrative_area_level_1") {
+      //           this.uf = endereco[i].long_name;
+      //         }
+      //         if (endereco[i].types[0] == "administrative_area_level_2") {
+      //           this.cidade = endereco[i].long_name;
+      //         }
+      //       }
+      //       this.getEventosByLocalization();
+      //     }
+      //   })
+      // .catch((error) => {
+      //   console.log(error);
+      //   this.$swal({
+      //     icon: "error",
+      //     title: "Ops algo deu errado!!",
+      //     text: `${error}`,
+      //   });
+      // });
     },
 
     showError(error) {
@@ -249,7 +283,7 @@ export default {
           this.$swal({
             icon: "error",
             title: "Ops algo deu errado!!",
-            text: `User denied the request for Geolocation.`,
+            text: `Para melhorar sua experiencia por favor recarregue o site e aceite compartilhar sua localização !`,
           });
           break;
         case error.POSITION_UNAVAILABLE:
@@ -283,7 +317,7 @@ export default {
         .then((response) => {
           this.eventos = response.data;
           this.totalEventos = response.data;
-          console.log(this.eventos);
+          this.getLocation();
           this.loadingEventos = true;
         })
         .catch((error) => {
