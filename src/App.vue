@@ -23,6 +23,7 @@ export default {
   box-sizing: border-box;
   display: flex;
   min-height: 100vh;
+  width: 100%;
   flex-direction: column;
   background-color: #f8f8fb;
 }

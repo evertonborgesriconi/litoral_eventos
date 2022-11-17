@@ -81,9 +81,9 @@
         </div>
       </div>
     </div>
-    <div class="col">
+    <div class="col-6">
       <div class="greem-box">
-        <img src="../assets/images/img2.png" alt="img1" />
+        <img src="../assets/images/img2.png" class="img-fluid" alt="img1" />
         <div class="box">
           <h2>
             Você cadastrado com criador para poder divulgar a TODOS seus
@@ -245,10 +245,10 @@ export default {
           var msg = error.response.data.message;
 
           this.$swal({
-              icon: "error",
-              title: "Ops algo deu errado!!",
-              text: `${msg}`,
-            });
+            icon: "error",
+            title: "Ops algo deu errado!!",
+            text: `${msg}`,
+          });
         });
     },
   },
@@ -331,6 +331,44 @@ section {
   font-size: 2.5rem;
   color: #ffffff;
   text-align: center;
+}
+
+@media (max-width: 800px) {
+  .col-6 {
+    display: none;
+  }
+  .form-input h2 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #18c07a;
+    text-align: center;
+  }
+
+  .form-input {
+    padding: 0;
+  }
+  .error {
+  color: red;
+  font-size: 1rem;
+}
+}
+@media (max-width: 450px) {
+  .col-6 {
+    display: none;
+  }
+  .form-input h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #18c07a;
+    text-align: center;
+  }
+  .form-input {
+    padding: 0;
+  }
+  .error {
+  color: red;
+  font-size: 0.8rem;
+}
 }
 </style>
 

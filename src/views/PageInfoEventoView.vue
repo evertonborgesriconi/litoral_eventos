@@ -239,4 +239,70 @@ h1 {
   text-align: center;
   color: black;
 }
+
+@media (max-width: 1000px) {
+  .box-img img {
+    height: 300px;
+    width: 100%;
+  }
+  h1 {
+    font-size: 2.5rem;
+    text-align: center;
+    color: #18c07a;
+    font-weight: bold;
+  }
+
+  .descricao h2 {
+    font-size: 2rem;
+    color: #18c07a;
+    font-weight: bold;
+  }
+
+  .data {
+    font-size: 1.0rem;
+  }
+
+  .endereco h2 {
+    font-size: 2.0rem;
+
+  }
+
+  .endereco .ende {
+    font-size: 1.2rem;
+
+  }
+  
+}
+@media (max-width: 400px) {
+  .box-img img {
+    height: 300px;
+    width: 100%;
+  }
+  h1 {
+    font-size: 2rem;
+    text-align: center;
+    color: #18c07a;
+    font-weight: bold;
+  }
+
+  .descricao h2 {
+    font-size: 1.5rem;
+    color: #18c07a;
+    font-weight: bold;
+  }
+
+  .data {
+    font-size: 0.8rem;
+  }
+
+  .endereco h2 {
+    font-size: 1.5rem;
+
+  }
+
+  .endereco .ende {
+    font-size: 0.9rem;
+
+  }
+}
 </style>

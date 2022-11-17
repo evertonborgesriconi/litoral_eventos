@@ -207,14 +207,12 @@ export default {
     },
 
     orderByData() {
-      let data = new data;
-      function compare(a,b) {
+      let data = new data();
+      function compare(a, b) {
         return a.data_termino - b.data_termino;
       }
       this.eventos.sort(compare);
       console.log(this.eventos);
-
-
     },
 
     distanceEvento(cord, eventos) {
@@ -484,5 +482,119 @@ h4 {
   padding-top: 30px;
   font-size: 2rem;
   color: rgb(170, 169, 169);
+}
+
+@media (max-width: 1000px) {
+  .divulga h2 {
+    font-size: 1.8rem;
+    color: #ffffff;
+    font-weight: bold;
+  }
+
+  .divulga p {
+    margin-top: 1rem;
+    font-size: 1rem;
+    color: #ffffff;
+    font-weight: bold;
+  }
+
+  .box{
+    padding-bottom: 5px;
+  }
+
+  .btn2 {
+    padding: 3px 5px 3px 5px;
+    color: #18c07a;
+    font-size: 1.2rem;
+  }
+  .btn2 a {
+    text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: rgb(24, 192, 122);
+  }
+  .box-search .input-search {
+    border-style: none;
+    padding-left: 10px;
+    font-size: 1.3rem;
+    outline: none;
+    border-bottom: 1px solid #fff;
+    color: #fff;
+    background-color: #18c07a;
+    margin-bottom: 5px;
+  }
+  .box-search select {
+    font-size: 1.5rem;
+    text-align: center;
+    border: none;
+    margin-right: 10px;
+    font-weight: bold;
+    margin-top: 15px;
+  }
+}
+
+@media (max-width: 770px) {
+
+  .box-search .input-search {
+    border-style: none;
+    padding-left: 10px;
+    font-size: 1rem;
+    outline: none;
+    border-bottom: 1px solid #fff;
+    color: #fff;
+    background-color: #18c07a;
+    margin-bottom: 5px;
+  }
+
+  .divulga h2 {
+    font-size: 1.4rem;
+    color: #ffffff;
+    font-weight: bold;
+  }
+
+  .divulga p {
+    font-size: 0.9rem;
+    color: #ffffff;
+    font-weight: bold;
+    margin-top: 2px;
+  }
+  .btn2 {
+    padding: 3px 5px 3px 5px;
+    color: #18c07a;
+    font-size: 1rem;
+  }
+  .btn2 a {
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: rgb(24, 192, 122);
+  }
+}
+
+@media (max-width: 560px) {
+
+.container{
+  width: 100%;
+}
+.btn2 {
+  padding: 3px 5px 3px 5px;
+  color: #18c07a;
+  font-size: 0.7rem;
+}
+.btn2 a {
+  text-decoration: none;
+  font-size: 0.7rem;
+  font-weight: bold;
+  color: rgb(24, 192, 122);
+}
+
+.box-search select {
+    font-size: 0.7rem;
+    text-align: center;
+    border: none;
+    margin-right: 10px;
+    font-weight: bold;
+    margin-top: 15px;
+  }
 }
 </style>

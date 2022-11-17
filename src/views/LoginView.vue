@@ -39,7 +39,7 @@
         </div>
       </div>
     </div>
-    <div class="col">
+    <div class="col-6">
       <div class="greem-box">
         <img src="../assets/images/img1.png" alt="img1" />
         <div class="box">
@@ -296,6 +296,44 @@ section {
 
 .nodi {
   font-size: 2rem;
+}
+
+@media (max-width: 800px) {
+  .col-6 {
+    display: none;
+  }
+  .form-input h2 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #18c07a;
+    text-align: center;
+  }
+
+  .form-input {
+    padding: 0;
+  }
+  .error {
+  color: red;
+  font-size: 1rem;
+}
+}
+@media (max-width: 450px) {
+  .col-6 {
+    display: none;
+  }
+  .form-input h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #18c07a;
+    text-align: center;
+  }
+  .form-input {
+    padding: 0;
+  }
+  .error {
+  color: red;
+  font-size: 0.8rem;
+}
 }
 </style>
 
