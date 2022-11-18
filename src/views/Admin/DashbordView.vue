@@ -3,7 +3,7 @@
     <div v-if="!loading">
       <nav>
         <div class="clickable" @click="getHome()">
-          Bem vindo!! {{ criador.name }}
+          <label class="bn"> Bem vindo!! </label> {{ criador.name }}
         </div>
         <a
           class="nav-link dropdown-toggle"
@@ -71,7 +71,7 @@ export default {
           }
         })
         .catch(() => {
-         // console.log(error.request.response);
+          // console.log(error.request.response);
         });
     },
 
@@ -148,8 +148,59 @@ nav {
   justify-content: center;
 }
 
-.nav-link{
+.nav-link {
   -webkit-appearance: none;
   -moz-appearance: none;
+}
+
+@media (max-width: 1000px) {
+  nav {
+    font-size: 2.5rem;
+  }
+  .btn {
+    background-color: #18c07a;
+    color: #ffffff;
+    border-radius: 5%;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-align: center;
+  }
+  .clickable {
+    cursor: pointer;
+  }
+
+  .btn:hover {
+    color: #18c07a;
+    font-size: 1.2rem;
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+  }
+}
+
+@media (max-width: 680px) {
+  nav {
+    font-size: 2rem;
+    padding-left: 0.1rem;
+  padding-right: 0.1rem;
+  }
+  .bn{
+    display: none;
+  }
+  .btn {
+    background-color: #18c07a;
+    color: #ffffff;
+    border-radius: 5%;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+  }
+  .clickable {
+    cursor: pointer;
+  }
+
+  .btn:hover {
+    color: #18c07a;
+    font-size: 1.2rem;
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+  }
 }
 </style>

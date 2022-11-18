@@ -283,4 +283,57 @@ section label {
 .error {
   color: red;
 }
+
+@media (max-width: 800px) {
+  .titulo h2 {
+  font-size: 2rem;
+  text-align: center;
+  color: #18c07a;
+  font-weight: bold;
+}
+
+.titulo-evento {
+  text-align: center;
+  font-weight: bold;
+}
+.titulo-evento label {
+  color: #18c07a;
+}
+
+.descricao {
+  text-align: center;
+}
+
+section input {
+  background-color: #f8f8fb;
+  display: block;
+  width: 100%;
+  padding: 0.2rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  border: none;
+  appearance: none;
+  border: 2px solid #18c07a;
+  color: #18c07a;
+}
+section label {
+  font-weight: bold;
+  color: black;
+  font-size: 1.2rem;
+}
+
+.button {
+  display: flex;
+  justify-content: right;
+  padding-bottom: 20px;
+}
+.btn {
+  background-color: #18c07a;
+  color: #ffffff;
+  border-radius: 5px;
+  font-size: 1rem;
+  text-align: center;
+}
+}
 </style>

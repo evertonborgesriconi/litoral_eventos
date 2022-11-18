@@ -66,4 +66,15 @@ button:hover{
 .close-btn {
   display: none;
 }
+@media (max-width: 800px) {
+  .card-header {
+  font-size: 1rem;
+  color: #18c07a;
+  font-weight: bold;
+}
+
+.card-text {
+  font-size: 0.9rem;
+}
+}
 </style>

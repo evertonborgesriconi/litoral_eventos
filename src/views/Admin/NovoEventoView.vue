@@ -13,7 +13,7 @@
             <label>Imagem de divulgação </label>
             <p>Selecione uma imagem de capa de divulgação do seu evento!!</p>
             <div class="row">
-              <div class="col-6">
+              <div class="col-md-6">
                 <div
                   class="imagePreview"
                   :style="{ 'background-image': `url(${previewImage})` }"
@@ -26,11 +26,13 @@
                   @input="pickFile"
                 />
               </div>
-              <div class="col-6">
-                <h3>
-                  Formato JPEG ou PNG de no máximo 2MB. Imagens com dimensões
-                  diferentes serão redimensionadas.
-                </h3>
+              <div class="col-md-6">
+                <div class="des">
+                  <h3>
+                    Formato JPEG ou PNG de no máximo 2MB. Imagens com dimensões
+                    diferentes serão redimensionadas.
+                  </h3>
+                </div>
               </div>
             </div>
           </div>
@@ -97,7 +99,12 @@
         <div class="row">
           <div class="col">
             <label> Data de inicio </label>
-            <Field name="data_inicio" type="date" :rules="validateDataInicio" :minDate="minDateFormated"/>
+            <Field
+              name="data_inicio"
+              type="date"
+              :rules="validateDataInicio"
+              :minDate="minDateFormated"
+            />
 
             <ErrorMessage name="data_inicio" class="error" />
           </div>
@@ -128,7 +135,7 @@
         </div>
         <div class="row">
           <label> Busque o endereço do evento </label>
-          <div class="col-6">
+          <div class="col-md-6">
             <div class="search">
               <GMapAutocomplete
                 placeholder="Escreva o endereço do evento"
@@ -136,9 +143,8 @@
               >
               </GMapAutocomplete>
               <button
-                class="btn btn-outline-secondary"
+                class="btn"
                 type="button"
-                id="button-addon2"
                 @click="addMarker()"
               >
                 Buscar
@@ -225,7 +231,7 @@
               </div>
             </div>
           </div>
-          <div class="col-6">
+          <div class="col-md-6">
             <div v-if="loadingMap">
               <GMapMap
                 :center="center"
@@ -300,7 +306,7 @@ export default {
       loadingMap: false,
       loading: false,
       loadingPost: false,
-      minDateFormated: null
+      minDateFormated: null,
     };
   },
 
@@ -316,9 +322,8 @@ export default {
     this.newData();
   },
   methods: {
-
-    newData(){
-        this.minDateFormated = new Date();
+    newData() {
+      this.minDateFormated = new Date();
     },
     postEvento() {
       this.loadingPost = true;
@@ -663,5 +668,100 @@ section p {
 
 .error {
   color: red;
+}
+
+@media (max-width: 800px) {
+  section h1 {
+    font-size: 3rem;
+    text-align: center;
+    color: #18c07a;
+    font-weight: bold;
+  }
+  section input {
+    background-color: #f8f8fb;
+    display: block;
+    width: 100%;
+    padding: 0.2rem 0.5rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    border: none;
+    appearance: none;
+    border: 2px solid #18c07a;
+    color: #18c07a;
+  }
+
+
+  .des {
+    display: none;
+  }
+
+  section select {
+    background-color: #f8f8fb;
+    display: block;
+    width: 100%;
+    padding: 0.2rem 0.5rem;
+    font-size: 1rem;
+    font-weight: 400;
+    border: none;
+    line-height: 1.5;
+    border: 2px solid #18c07a;
+    color: #18c07a;
+  }
+
+  section .row {
+    margin-top: 15px;
+  }
+
+  section label {
+    font-weight: bold;
+    color: black;
+    font-size: 1.5rem;
+  }
+
+  section .ttl {
+    font-size: 0.8rem;
+  }
+
+  section p {
+    font-size: 0.9rem;
+  }
+
+  .imagePreview {
+    height: 250px;
+    width: 100%;
+    display: block;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    background-size: cover;
+    background-position: center center;
+    background-color: #18c07a;
+  }
+
+  .text-area {
+    height: 300px;
+    width: 100%;
+    line-height: 1.5;
+    font-size: 1.5rem;
+    border-radius: 0.3rem;
+    border: 2px solid #18c07a;
+    color: #18c07a;
+  }
+
+  .search {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .btn {
+    background-color: #18c07a;
+    color: #ffffff;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    margin-left: 5px;
+  }
 }
 </style>
