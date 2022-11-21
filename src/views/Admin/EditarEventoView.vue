@@ -28,6 +28,7 @@
                   name="image"
                   type="file"
                   ref="fileInput"
+                  accept="image/*"
                   @input="pickFile"
                 />
               </div>
@@ -109,6 +110,7 @@
               name="data_inicio"
               type="date"
               :rules="validateDataInicio"
+              :min="dataAgora"
               v-model="evento.data_inicio"
             />
             <ErrorMessage name="data_inicio" class="error" />
@@ -128,6 +130,7 @@
             <Field
               name="data_termino"
               type="date"
+              :min="dataAgora"
               :rules="validateDataTermino"
               v-model="evento.data_termino"
             />
@@ -304,6 +307,7 @@ export default {
       previewImage: null,
       markers: [],
       currintPlace: [],
+      dataAgora: null
 
     };
   },
@@ -311,6 +315,7 @@ export default {
     this.getEvento();
     this.getAssunto();
     this.getCategoria();
+    this.dataHoje();
   },
 
   computed: {
@@ -319,6 +324,14 @@ export default {
     },
   },
   methods: {
+    dataHoje(){
+      const hoje = new Date();
+      const dia = hoje.getDate().toString().padStart(2, "0");
+      const mes = String(hoje.getMonth() + 1).padStart(2, "0");
+      const ano = hoje.getFullYear();
+      this.dataAgora = `${ano}-${mes}-${dia}`;
+    },
+
     editaEvento() {
       this.loadingEdit = true;
       adminApi

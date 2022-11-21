@@ -23,6 +23,7 @@
                   name="image"
                   type="file"
                   ref="fileInput"
+                  accept="image/*"
                   @input="pickFile"
                 />
               </div>
@@ -102,6 +103,7 @@
             <Field
               name="data_inicio"
               type="date"
+              :min="dataAgora"
               :rules="validateDataInicio"
               :minDate="minDateFormated"
             />
@@ -118,6 +120,7 @@
             <Field
               name="data_termino"
               type="date"
+              :min="dataAgora"
               :rules="validateDataTermino"
               :minDate="minDateFormated"
             />
@@ -306,7 +309,7 @@ export default {
       loadingMap: false,
       loading: false,
       loadingPost: false,
-      minDateFormated: null,
+      dataAgora: null,
     };
   },
 
@@ -320,8 +323,16 @@ export default {
     this.getAssunto();
     this.getCategoria();
     this.newData();
+    this.dataHoje();
   },
   methods: {
+    dataHoje(){
+      const hoje = new Date();
+      const dia = hoje.getDate().toString().padStart(2, "0");
+      const mes = String(hoje.getMonth() + 1).padStart(2, "0");
+      const ano = hoje.getFullYear();
+      this.dataAgora = `${ano}-${mes}-${dia}`;
+    },
     newData() {
       this.minDateFormated = new Date();
     },
@@ -502,6 +513,9 @@ export default {
     validateDataTermino(value) {
       if (!value) {
         return "O campo data termino esta vazio";
+      }
+      if (value < this.evento.data_inicio ) {
+        return "O campo data termino não pode ser menor que o campo Data Inicio";
       }
       this.evento.data_termino = value;
       return true;

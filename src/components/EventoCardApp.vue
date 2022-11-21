@@ -8,8 +8,7 @@
         <h2>{{ evento.titulo_evento }}</h2>
         <div class="data">
           <i class="fa-solid fa-calendar-days"></i>
-          <label> Inicio: {{ data_inicio }} {{ hora_inicio }}</label>
-          <label> Termino: {{ data_termino }} {{ hora_termino }}</label>
+          <label> Inicio: {{ data_inicio }} {{ hora_inicio }}</label> <label> Termino: {{ data_termino }} {{ hora_termino }}</label>
         </div>
         <div class="endereco">
           <i class="fa-solid fa-location-dot"></i>

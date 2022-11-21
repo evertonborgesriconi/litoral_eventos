@@ -98,8 +98,9 @@ export default {
         adminApi
           .get(`/eventosidcriador/${criador_id}`)
           .then((response) => {
-            console.log(response.data);
-            this.$store.commit("pegaEventosCriador", response.data);
+            let event = response.data;
+            event.reverse();
+            this.$store.commit("pegaEventosCriador", event);
             this.loading = false;
           })
           .catch((error) => {

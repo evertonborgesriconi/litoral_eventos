@@ -206,13 +206,34 @@ export default {
       this.loadingEventos = true;
     },
 
-    orderByData() {
-      let data = new data();
-      function compare(a, b) {
-        return a.data_termino - b.data_termino;
-      }
-      this.eventos.sort(compare);
-      console.log(this.eventos);
+    orderByData(eventos) {
+      const hoje = new Date();
+      const dia = hoje.getDate().toString().padStart(2, "0");
+      const mes = String(hoje.getMonth() + 1).padStart(2, "0");
+      const ano = hoje.getFullYear();
+      const dataAtual = `${ano}-${mes}-${dia}`;
+      this.eventos = eventos.filter((result) => {
+        return this.converteData(result.data_termino) > this.converteData(dataAtual);
+      });
+      this.totalEventos = eventos.filter((result) => {
+        return this.converteData(result.data_termino) > this.converteData(dataAtual);
+      });
+
+
+      this.eventos.reverse();
+      this.totalEventos.reverse();
+
+
+    },
+
+    converteData(DataDDMMYY) {
+      const dataSplit = DataDDMMYY.split("-");
+      const novaData = new Date(
+        parseInt(dataSplit[0], 10),
+        parseInt(dataSplit[1], 10) - 1,
+        parseInt(dataSplit[2], 10)
+      );
+      return novaData;
     },
 
     distanceEvento(cord, eventos) {
@@ -240,39 +261,6 @@ export default {
       this.distanceEvento(cord, this.totalEventos);
 
       this.loc = true;
-
-      // axios
-      //   .get(
-      //     "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
-      //       position.coords.latitude +
-      //       "," +
-      //       position.coords.longitude +
-      //       "&key=AIzaSyAb3CYZqmTuvQSWBiUSnK-ebRHU_9U1mio"
-      //   )
-      //   .then((response) => {
-      //     if (response.status == 200 || response.status == 201) {
-      //       let result = response.data.results[0];
-      //       let endereco = result.address_components;
-      //       console.log(endereco);
-      //       for (let i = 0; i < endereco.length; i++) {
-      //         if (endereco[i].types[0] == "administrative_area_level_1") {
-      //           this.uf = endereco[i].long_name;
-      //         }
-      //         if (endereco[i].types[0] == "administrative_area_level_2") {
-      //           this.cidade = endereco[i].long_name;
-      //         }
-      //       }
-      //       this.getEventosByLocalization();
-      //     }
-      //   })
-      // .catch((error) => {
-      //   console.log(error);
-      //   this.$swal({
-      //     icon: "error",
-      //     title: "Ops algo deu errado!!",
-      //     text: `${error}`,
-      //   });
-      // });
     },
 
     showError(error) {
@@ -313,9 +301,9 @@ export default {
       api
         .get("eventos")
         .then((response) => {
-          this.eventos = response.data;
-          this.totalEventos = response.data;
+          this.AllEventos = response.data;
           this.getLocation();
+          this.orderByData(response.data);
           this.loadingEventos = true;
         })
         .catch((error) => {
@@ -498,7 +486,7 @@ h4 {
     font-weight: bold;
   }
 
-  .box{
+  .box {
     padding-bottom: 5px;
   }
 
@@ -534,7 +522,6 @@ h4 {
 }
 
 @media (max-width: 770px) {
-
   .box-search .input-search {
     border-style: none;
     padding-left: 10px;
@@ -572,23 +559,22 @@ h4 {
 }
 
 @media (max-width: 560px) {
+  .container {
+    width: 100%;
+  }
+  .btn2 {
+    padding: 3px 5px 3px 5px;
+    color: #18c07a;
+    font-size: 0.7rem;
+  }
+  .btn2 a {
+    text-decoration: none;
+    font-size: 0.7rem;
+    font-weight: bold;
+    color: rgb(24, 192, 122);
+  }
 
-.container{
-  width: 100%;
-}
-.btn2 {
-  padding: 3px 5px 3px 5px;
-  color: #18c07a;
-  font-size: 0.7rem;
-}
-.btn2 a {
-  text-decoration: none;
-  font-size: 0.7rem;
-  font-weight: bold;
-  color: rgb(24, 192, 122);
-}
-
-.box-search select {
+  .box-search select {
     font-size: 0.7rem;
     text-align: center;
     border: none;
