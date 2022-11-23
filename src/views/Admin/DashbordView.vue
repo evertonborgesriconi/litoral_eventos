@@ -76,8 +76,14 @@ export default {
     },
 
     editaPerfil() {
-      router.push({
-        path: `/deshboard/criador/${this.criador.name}/editar-perfil`,
+      // router.push({
+      //   path: `/deshboard/criador/${this.criador.name}/editar-perfil`,
+      // });
+
+      this.$swal({
+        icon: "error",
+        title: "Oops...",
+        text: "Função em Desenvolvimento!",
       });
     },
     getHome() {
@@ -180,9 +186,9 @@ nav {
   nav {
     font-size: 2rem;
     padding-left: 0.1rem;
-  padding-right: 0.1rem;
+    padding-right: 0.1rem;
   }
-  .bn{
+  .bn {
     display: none;
   }
   .btn {

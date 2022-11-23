@@ -61,6 +61,20 @@
           />
           <ErrorMessage name="email" class="error" />
         </div>
+        <div class="input-group mb-3">
+          <label class="form-label">Senha</label>
+          <Field name="password" type="password" :rules="validatePassword" />
+          <ErrorMessage name="password" class="error" />
+        </div>
+        <div class="input-group mb-3">
+          <label class="form-label">Confirma Senha</label>
+          <Field
+            name="password_confirmation"
+            type="password"
+            :rules="validatePassword_confirmation"
+          />
+          <ErrorMessage name="password_confirmation" class="error" />
+        </div>
         <button type="submit" class="btn" @click="novoEvento()">
           Editar dados
         </button>
@@ -93,13 +107,11 @@ export default {
   },
 
   methods: {
-
-    teste(){
+    teste() {
       this.$swal({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'Função em Desenvolvimento!',
-
+        icon: "error",
+        title: "Oops...",
+        text: "Função em Desenvolvimento!",
       });
     },
     buscaCriador() {
@@ -191,6 +203,44 @@ export default {
       this.criador.email = value;
       return true;
     },
+
+    validatePassword(value) {
+      if (!value) {
+        return "O campo Senha esta vazio";
+      }
+
+      if (value.length < 6) {
+        return "A senha dever ter no minimo 6 caracters";
+      }
+
+      if (!/\d/.test(value)) {
+        return "A senha dever um numero";
+      }
+      if (!/[A-Z]/.test(value)) {
+        return "A senha deve ter no minimo 1 letra Maiscula";
+      }
+
+      const format = /[ !@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/;
+      if (!format.test(value)) {
+        return "A senha dever no minimo 1 caracter especial";
+      }
+      this.criador.password = value;
+
+      return true;
+    },
+
+    validatePassword_confirmation(value) {
+      if (!value) {
+        return "O campo Confirma Senha esta vazio";
+      }
+
+      if (value != this.criador.password) {
+        return "O campo confirmar senha esta diferente do campo senha";
+      }
+
+      this.criador.password_confirmation = value;
+      return true;
+    },
   },
 };
 </script>
@@ -248,6 +298,4 @@ section input {
 .error {
   color: red;
 }
-
-
 </style>

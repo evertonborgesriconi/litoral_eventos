@@ -7,13 +7,13 @@
           <Form @submit="postRegister">
             <h2>Cadastro de criador</h2>
             <div class="input-group mb-3">
-              <label class="form-label">Nome Completo</label>
+              <label class="form-label">Nome Completo *</label>
 
               <Field name="name" type="text" :rules="validateName" />
               <ErrorMessage name="name" class="error" />
             </div>
             <div class="input-group mb-3">
-              <label class="form-label">CPF</label>
+              <label class="form-label">CPF *</label>
 
               <Field
                 name="cpf_cnpj"
@@ -25,7 +25,7 @@
             </div>
 
             <div class="input-group mb-3">
-              <label class="form-label">Data Nascimento</label>
+              <label class="form-label">Data Nascimento  *</label>
 
               <Field
                 name="data_nascimento"
@@ -35,7 +35,7 @@
               <ErrorMessage name="data_nascimento" class="error" />
             </div>
             <div class="input-group mb-3">
-              <label class="form-label">Telefone</label>
+              <label class="form-label">Telefone *</label>
 
               <Field
                 name="telefone"
@@ -46,14 +46,14 @@
               <ErrorMessage name="telefone" class="error" />
             </div>
             <div class="input-group mb-3">
-              <label class="form-label">Email</label>
+              <label class="form-label">Email  *</label>
 
               <Field name="email" type="email" :rules="validateEmail" />
               <ErrorMessage name="email" class="error" />
             </div>
 
             <div class="input-group mb-3">
-              <label class="form-label">Senha</label>
+              <label class="form-label">Senha  *</label>
               <Field
                 name="password"
                 type="password"
@@ -62,7 +62,7 @@
               <ErrorMessage name="password" class="error" />
             </div>
             <div class="input-group mb-3">
-              <label class="form-label">Confirma Senha</label>
+              <label class="form-label">Confirma Senha  *</label>
               <Field
                 name="password_confirmation"
                 type="password"
@@ -199,14 +199,14 @@ export default {
       if (!/\d/.test(value)) {
         return "A senha dever um numero";
       }
-      if (!/[A-Z]/.test(value)) {
-        return "A senha deve ter no minimo 1 letra Maiscula";
-      }
+      // if (!/[A-Z]/.test(value)) {
+      //   return "A senha deve ter no minimo 1 letra Maiscula";
+      // }
 
-      const format = /[ !@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/;
-      if (!format.test(value)) {
-        return "A senha dever no minimo 1 caracter especial";
-      }
+      // const format = /[ !@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/;
+      // if (!format.test(value)) {
+      //   return "A senha dever no minimo 1 caracter especial";
+      // }
       this.criador.password = value;
 
       return true;

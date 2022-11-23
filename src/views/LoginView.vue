@@ -1,7 +1,7 @@
 <template>
   <section>
     <div class="col">
-      <div class="form-input">
+      <div class="form-input" v-if="check">
         <div class="container-fluid">
           <Form @submit="postLogin">
             <h2>Connectar-se</h2>
@@ -38,6 +38,9 @@
           </Form>
         </div>
       </div>
+      <div v-else>
+        <SpinnerApp />
+      </div>
     </div>
     <div class="col-6">
       <div class="greem-box">
@@ -56,7 +59,7 @@
   </section>
 </template>
 
-    <script>
+<script>
 import router from "@/router";
 import { api } from "../../http/index";
 import { adminApi } from "../../http/index";
@@ -77,6 +80,7 @@ export default {
 
       errors: "",
       loading: true,
+      check: true,
     };
   },
 
@@ -117,6 +121,7 @@ export default {
       };
 
       if (criador_id && token) {
+        this.check = false;
         adminApi
           .post("validatoken", data)
           .then((response) => {
@@ -124,11 +129,14 @@ export default {
               let res = response.data;
               if (res.status == 1) {
                 router.push({ path: `/deshboard/criador/${res.criador.name}` });
+                this.check = true;
               }
             }
+            this.check = true;
           })
           .catch((error) => {
             console.log(error.request.response.message);
+            this.check = true;
           });
       }
     },
@@ -313,9 +321,9 @@ section {
     padding: 0;
   }
   .error {
-  color: red;
-  font-size: 1rem;
-}
+    color: red;
+    font-size: 1rem;
+  }
 }
 @media (max-width: 450px) {
   .col-6 {
@@ -331,9 +339,9 @@ section {
     padding: 0;
   }
   .error {
-  color: red;
-  font-size: 0.8rem;
-}
+    color: red;
+    font-size: 0.8rem;
+  }
 }
 </style>
 
